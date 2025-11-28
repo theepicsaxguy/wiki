@@ -1,107 +1,214 @@
 ---
 import { getCollection } from 'astro:content';
+import Search from './Search';
 
 // Get all docs pages
 const allDocs = await getCollection('docs');
 
-// Build a hierarchical structure
+// Prepare search data
+const searchDocs = allDocs.map(doc => ({
+  slug: doc.slug,
+  title: doc.data.title,
+  description: doc.data.description
+}));
+
+// Build a truly recursive tree structure
 type NavItem = {
   title: string;
   slug: string;
-  weight?: number;
+  weight: number;
   children: NavItem[];
+  path: string[];
 };
 
-const navStructure: Record<string, NavItem> = {};
+function buildTree(docs: any[]): NavItem[] {
+  const tree: Map<string, NavItem> = new Map();
 
-allDocs.forEach(doc => {
-  const pathParts = doc.slug.split('/');
-  const isIndex = pathParts[pathParts.length - 1] === 'index';
+  // First pass: create all nodes
+  docs.forEach(doc => {
+    const parts = doc.slug.split('/');
+    const isIndex = parts[parts.length - 1] === 'index';
 
-  // Build the path to this item
-  let current = navStructure;
-  const itemPath: string[] = [];
+    if (isIndex && parts.length === 1) return; // Skip root index
 
-  pathParts.forEach((part, index) => {
-    itemPath.push(part);
-    const key = itemPath.join('/');
-
-    if (!current[key]) {
-      current[key] = {
+    // Create node for this doc
+    const nodeKey = doc.slug;
+    if (!tree.has(nodeKey)) {
+      tree.set(nodeKey, {
         title: doc.data.title,
         slug: doc.slug,
         weight: doc.data.weight || 999,
-        children: {}
-      };
-    } else if (isIndex && index === pathParts.length - 1) {
-      // Update with index data
-      current[key].title = doc.data.title;
-      current[key].weight = doc.data.weight || current[key].weight;
+        children: [],
+        path: parts
+      });
+    } else {
+      // Update existing node with doc data
+      const node = tree.get(nodeKey)!;
+      node.title = doc.data.title;
+      node.weight = doc.data.weight || 999;
     }
   });
-});
 
-// Convert to sorted array
-function sortAndFlatten(items: Record<string, NavItem>): NavItem[] {
-  return Object.values(items)
-    .sort((a, b) => (a.weight || 999) - (b.weight || 999))
-    .map(item => ({
-      ...item,
-      children: sortAndFlatten(item.children || {})
-    }));
+  // Second pass: build parent-child relationships
+  const rootNodes: NavItem[] = [];
+  const nodesBySlug = new Map(Array.from(tree.entries()));
+
+  nodesBySlug.forEach((node, slug) => {
+    const parts = node.path;
+
+    if (parts.length === 1) {
+      // Top level
+      rootNodes.push(node);
+    } else {
+      // Find parent
+      const parentPath = parts.slice(0, -1);
+      const parentSlug = parentPath.join('/');
+      const parentIndexSlug = parentSlug + '/index';
+
+      let parent = nodesBySlug.get(parentSlug) || nodesBySlug.get(parentIndexSlug);
+
+      if (parent && !node.slug.endsWith('/index')) {
+        parent.children.push(node);
+      } else if (!parent && parts.length === 2) {
+        // Parent doesn't exist, add to root
+        rootNodes.push(node);
+      }
+    }
+  });
+
+  // Sort recursively
+  function sortNodes(nodes: NavItem[]): NavItem[] {
+    return nodes
+      .sort((a, b) => {
+        // Index pages first
+        if (a.slug.endsWith('/index') && !b.slug.endsWith('/index')) return -1;
+        if (!a.slug.endsWith('/index') && b.slug.endsWith('/index')) return 1;
+        return a.weight - b.weight;
+      })
+      .map(node => ({
+        ...node,
+        children: sortNodes(node.children)
+      }));
+  }
+
+  return sortNodes(rootNodes);
 }
 
-const navigation = sortAndFlatten(navStructure);
+const navigation = buildTree(allDocs);
 
 // Get current page
 const currentPath = Astro.url.pathname.replace('/docs/', '').replace(/\/$/, '');
 
 function isActive(slug: string): boolean {
-  return currentPath === slug || currentPath.startsWith(slug + '/');
+  return currentPath === slug || currentPath === slug.replace('/index', '');
+}
+
+function isParentOfActive(slug: string): boolean {
+  return currentPath.startsWith(slug + '/') || currentPath.startsWith(slug.replace('/index', '') + '/');
+}
+
+// Recursive component for rendering tree
+interface TreeNodeProps {
+  node: NavItem;
+  depth: number;
 }
 ---
 
-<nav class="space-y-1" aria-label="Documentation navigation">
-  {navigation.map(section => {
-    const sectionActive = isActive(section.slug);
-    const hasChildren = Object.keys(section.children).length > 0;
+<!-- Search Bar -->
+<div class="mb-6">
+  <Search client:load docs={searchDocs} />
+</div>
 
-    return (
-      <div class="space-y-1">
-        <a
-          href={`/docs/${section.slug}`}
-          class:list={[
-            "block px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-            sectionActive
-              ? "bg-primary/10 text-primary"
-              : "text-text-main hover:bg-surface-800 hover:text-white"
-          ]}
-        >
-          {section.title}
-        </a>
+<nav aria-label="Documentation navigation">
+  <ul class="space-y-1">
+    {navigation.map(node => {
+      const active = isActive(node.slug);
+      const isParent = isParentOfActive(node.slug);
+      const hasChildren = node.children.length > 0;
+      const isIndexPage = node.slug.endsWith('/index');
 
-        {hasChildren && (
-          <div class="ml-3 pl-3 border-l border-surface-700/50 space-y-1">
-            {Object.values(section.children)
-              .sort((a, b) => (a.weight || 999) - (b.weight || 999))
-              .filter(child => !child.slug.endsWith('/index'))
-              .map(child => (
-                <a
-                  href={`/docs/${child.slug}`}
-                  class:list={[
-                    "block px-3 py-1.5 rounded-lg text-sm transition-colors",
-                    isActive(child.slug)
-                      ? "text-primary font-medium"
-                      : "text-text-muted hover:text-white hover:bg-surface-800/50"
-                  ]}
+      return (
+        <li>
+          <a
+            href={`/docs/${node.slug}`}
+            class:list={[
+              "block px-3 py-2 rounded-lg text-sm font-medium transition-all border-l-3",
+              active
+                ? "bg-indigo-500/20 text-white border-indigo-400"
+                : isParent
+                ? "bg-indigo-500/10 text-slate-200 border-indigo-500/50"
+                : "text-slate-300 hover:bg-[#1e232f] hover:text-white border-transparent hover:border-slate-600"
+            ]}
+          >
+            <span class="flex items-center gap-2">
+              {hasChildren && (
+                <svg
+                  class="w-4 h-4 text-slate-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
                 >
-                  {child.title}
-                </a>
-              ))
-            }
-          </div>
-        )}
-      </div>
-    );
-  })}
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+              )}
+              {node.title}
+            </span>
+          </a>
+
+          {hasChildren && (
+            <ul class="mt-1 ml-4 pl-4 border-l-2 border-[#292e3b] space-y-1">
+              {node.children.filter(child => !child.slug.endsWith('/index')).map(child => {
+                const childActive = isActive(child.slug);
+                const childIsParent = isParentOfActive(child.slug);
+                const childHasChildren = child.children.length > 0;
+
+                return (
+                  <li>
+                    <a
+                      href={`/docs/${child.slug}`}
+                      class:list={[
+                        "block px-3 py-1.5 rounded-lg text-sm transition-all border-l-2",
+                        childActive
+                          ? "text-white font-medium bg-indigo-500/10 border-indigo-400"
+                          : childIsParent
+                          ? "text-slate-200 bg-indigo-500/5 border-indigo-500/50"
+                          : "text-slate-400 hover:text-white hover:bg-[#1e232f]/50 border-transparent"
+                      ]}
+                    >
+                      {child.title}
+                    </a>
+
+                    {childHasChildren && (
+                      <ul class="mt-1 ml-4 pl-4 border-l-2 border-[#292e3b] space-y-1">
+                        {child.children.filter(grandchild => !grandchild.slug.endsWith('/index')).map(grandchild => {
+                          const grandchildActive = isActive(grandchild.slug);
+
+                          return (
+                            <li>
+                              <a
+                                href={`/docs/${grandchild.slug}`}
+                                class:list={[
+                                  "block px-3 py-1.5 rounded-lg text-sm transition-all border-l-2",
+                                  grandchildActive
+                                    ? "text-white font-medium bg-indigo-500/10 border-indigo-400"
+                                    : "text-slate-400 hover:text-white hover:bg-[#1e232f]/50 border-transparent"
+                                ]}
+                              >
+                                {grandchild.title}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </li>
+      );
+    })}
+  </ul>
 </nav>

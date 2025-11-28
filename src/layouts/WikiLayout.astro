@@ -1,6 +1,7 @@
 ---
 import Navigation from '../components/Navigation.astro';
 import DocsSidebar from '../components/DocsSidebar.astro';
+import MobileSidebar from '../components/MobileSidebar';
 import '../styles/global.css';
 
 interface Props {
@@ -31,44 +32,88 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     <div class="flex-1 flex max-w-7xl mx-auto w-full">
       <!-- Docs Sidebar (Desktop Only) -->
       {isDocsPage && (
-        <div class="hidden lg:block w-64 flex-shrink-0 border-r border-surface-700/50 px-4 py-8">
+        <div id="desktop-sidebar" class="hidden lg:block w-64 flex-shrink-0 border-r border-surface-700/50 px-4 py-8">
           <DocsSidebar />
         </div>
       )}
 
+      <!-- Mobile Docs Sidebar (Drawer) -->
+      {isDocsPage && (
+        <>
+          <!-- Mobile FAB Button -->
+          <button
+            id="mobile-sidebar-button"
+            class="lg:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-lg flex items-center justify-center transition-all"
+            aria-label="Open navigation menu"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          <!-- Mobile Drawer -->
+          <div id="mobile-sidebar-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true"></div>
+
+            <!-- Drawer -->
+            <div class="absolute top-0 left-0 h-full w-80 max-w-[85vw] bg-[#0b0e14] border-r border-[#292e3b] shadow-2xl overflow-y-auto">
+              <!-- Header -->
+              <div class="sticky top-0 z-10 bg-[#0b0e14] border-b border-[#292e3b] px-4 py-4 flex items-center justify-between">
+                <h2 class="text-lg font-bold text-white">Navigation</h2>
+                <button
+                  id="mobile-sidebar-close"
+                  class="p-2 hover:bg-[#1e232f] rounded-lg transition-colors"
+                  aria-label="Close menu"
+                >
+                  <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Content -->
+              <div class="p-4">
+                <DocsSidebar />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       <!-- Main Content -->
-      <main class="flex-1 w-full min-w-0">
-        <div class={isDocsPage ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12"}>
+      <main class="flex-1 w-full min-w-0 px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-4xl mx-auto">
           <!-- Breadcrumbs -->
-          <nav class="mb-8" aria-label="Breadcrumb">
-            <ol class="flex items-center gap-2 text-sm text-text-muted">
-              <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+          <nav class="mb-4" aria-label="Breadcrumb">
+            <ol class="flex items-center gap-2 text-sm text-text-muted font-mono">
+              <li><a href="/" class="hover:text-primary transition-colors">docs</a></li>
               <li><span class="text-surface-600">/</span></li>
-              <li class="text-white font-medium">{title}</li>
+              <li class="text-text-main">{title}</li>
             </ol>
           </nav>
 
-          <!-- Article Content -->
-          <article class="wiki-content">
+          <!-- Article Content Card -->
+          <article class="wiki-content bg-surface-900 border border-border rounded-lg p-6 sm:p-8">
             <slot />
           </article>
 
           <!-- Article Footer -->
-          <div class="mt-16 pt-8 border-t border-surface-700">
+          <div class="mt-6 pt-6 px-6 bg-surface-900 border border-border rounded-lg">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div class="text-sm text-text-muted">
-                <p>Have questions? Reach out to <a href="mailto:admin@goingdark.social" class="text-primary hover:underline">admin@goingdark.social</a></p>
+                <p>Have questions? <a href="mailto:admin@goingdark.social" class="text-primary hover:underline">admin@goingdark.social</a></p>
               </div>
               <a
                 href="https://goingdark.social"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-surface-800 hover:bg-surface-700 border border-surface-600 rounded-lg text-sm font-medium text-white transition-all duration-200"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover rounded-lg text-sm font-medium text-white transition-all duration-200"
               >
+                Join our instance
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-                Join our instance
               </a>
             </div>
           </div>
@@ -178,6 +223,37 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     </footer>
 
     <script>
+      // Mobile Sidebar
+      const mobileButton = document.getElementById('mobile-sidebar-button');
+      const mobileOverlay = document.getElementById('mobile-sidebar-overlay');
+      const mobileClose = document.getElementById('mobile-sidebar-close');
+
+      if (mobileButton && mobileOverlay) {
+        mobileButton.addEventListener('click', () => {
+          mobileOverlay.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+
+        const closeSidebar = () => {
+          mobileOverlay.classList.add('hidden');
+          document.body.style.overflow = '';
+        };
+
+        mobileClose?.addEventListener('click', closeSidebar);
+        mobileOverlay.addEventListener('click', (e) => {
+          if (e.target === mobileOverlay || e.target.classList.contains('bg-black/60')) {
+            closeSidebar();
+          }
+        });
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !mobileOverlay.classList.contains('hidden')) {
+            closeSidebar();
+          }
+        });
+      }
+
       // Generate Table of Contents
       document.addEventListener('DOMContentLoaded', () => {
         const article = document.querySelector('.wiki-content');
