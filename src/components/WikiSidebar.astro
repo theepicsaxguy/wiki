@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+
+const currentSlug = Astro.url.pathname.replace('/wiki/', '').replace(/\/$/, '') || 'index';
+const allPages = await getCollection('wiki');
+
+// Sort by order field, then alphabetically
+const sortedPages = allPages.sort((a, b) => {
+  if (a.data.order !== undefined && b.data.order !== undefined) {
+    return a.data.order - b.data.order;
+  }
+  if (a.data.order !== undefined) return -1;
+  if (b.data.order !== undefined) return 1;
+  return a.data.title.localeCompare(b.data.title);
+});
+
+// Group by category
+const pagesByCategory = sortedPages.reduce((acc, page) => {
+  const category = page.data.category || 'General';
+  if (!acc[category]) acc[category] = [];
+  acc[category].push(page);
+  return acc;
+}, {} as Record<string, typeof sortedPages>);
+
+const isActive = (slug: string) => {
+  return currentSlug === slug || (currentSlug === '' && slug === 'index');
+};
+---
+
+<aside class="wiki-sidebar">
+  <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+    <nav aria-label="Wiki navigation" class="space-y-6">
+      {Object.entries(pagesByCategory).map(([category, pages]) => (
+        <div>
+          <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">
+            {category}
+          </h3>
+          <ul class="space-y-1">
+            {pages.map(page => (
+              <li>
+                <a
+                  href={`/wiki/${page.slug}`}
+                  class={`block px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                    isActive(page.slug)
+                      ? 'bg-primary text-white font-medium'
+                      : 'text-text-muted hover:text-white hover:bg-surface-800'
+                  }`}
+                >
+                  {page.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+
+    {/* Quick Actions */}
+    <div class="mt-8 pt-6 border-t border-surface-700">
+      <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">
+        Community
+      </h3>
+      <ul class="space-y-1">
+        <li>
+          <a
+            href="https://goingdark.social"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:text-white hover:bg-surface-800 transition-all duration-200"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            Join Instance
+          </a>
+        </li>
+        <li>
+          <a
+            href="mailto:admin@goingdark.social"
+            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:text-white hover:bg-surface-800 transition-all duration-200"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Contact Admin
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .wiki-sidebar {
+    @apply w-full;
+  }
+
+  .wiki-sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .wiki-sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-surface-700);
+    border-radius: 3px;
+  }
+</style>

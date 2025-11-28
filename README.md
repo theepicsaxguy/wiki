@@ -1,20 +1,135 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# goingdark.social Wiki
 
-# Run and deploy your AI Studio app
+Documentation and wiki site for **goingdark.social** - a privacy-focused Mastodon instance.
 
-This contains everything you need to run your app locally.
+## About
 
-View your app in AI Studio: https://ai.studio/apps/drive/1iVvxelLmAgjaHOEgaPwvdbiYbgP9PK8i
+This wiki provides essential information about our Mastodon instance, including:
 
-## Run Locally
+- Server rules and community guidelines
+- Privacy policy and data handling
+- Getting started guides
+- Community resources
 
-**Prerequisites:**  Node.js
+## Tech Stack
 
+- **Astro** - Static site generator
+- **MDX** - Markdown with JSX components
+- **Preact** - Lightweight React alternative for interactive components
+- **Tailwind CSS** - Utility-first CSS framework
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Development
+
+### Prerequisites
+
+- Node.js 18+
+- npm or pnpm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development Server
+
+```bash
+npm run dev
+```
+
+The site will be available at `http://localhost:4321`
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable components
+│   │   ├── Navigation.astro
+│   │   └── mdx/         # MDX components (Card, Callout)
+│   ├── layouts/         # Page layouts
+│   │   └── WikiLayout.astro
+│   ├── pages/           # Wiki pages (MDX)
+│   │   ├── index.mdx    # Home page
+│   │   ├── rules.mdx    # Server rules
+│   │   └── privacy.mdx  # Privacy policy
+│   └── styles/          # Global styles
+│       └── global.css
+├── astro.config.mjs     # Astro configuration
+├── tailwind.config.mjs  # Tailwind configuration
+└── package.json
+```
+
+## Adding Content
+
+### Creating a New Page
+
+1. Create a new `.mdx` file in `src/pages/`
+2. Add frontmatter with layout and title:
+
+```mdx
+---
+layout: ../layouts/WikiLayout.astro
+title: Your Page Title
+---
+
+# Your Page Title
+
+Your content here...
+```
+
+3. Add navigation link in `src/components/Navigation.astro` if needed
+
+### Using MDX Components
+
+Import and use custom components in your MDX files:
+
+```mdx
+import { Callout } from '../components/mdx/Callout';
+import Card from '../components/mdx/Card.astro';
+
+<Callout type="info">
+  This is an info callout
+</Callout>
+
+<Card title="Card Title" icon="🎯">
+  Card content
+</Card>
+```
+
+## Deployment
+
+This site can be deployed to:
+
+- Netlify
+- Vercel
+- Cloudflare Pages
+- GitHub Pages
+- Any static hosting service
+
+Configure your deployment to:
+- Build command: `npm run build`
+- Output directory: `dist`
+
+## License
+
+This wiki is maintained by the goingdark.social admin team.
+
+## Contact
+
+- **Instance**: https://goingdark.social
+- **Email**: admin@goingdark.social
+- **Mastodon**: @admin@goingdark.social

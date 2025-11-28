@@ -1,58 +1,94 @@
-import React from 'react';
-import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
+import type { ComponentChildren, FunctionComponent } from 'preact';
+import { AlertCircle, CheckCircle, Info, XCircle, Lightbulb } from 'lucide-preact';
 import { clsx } from 'clsx';
 
-type CalloutType = 'info' | 'warning' | 'error' | 'success';
+type CalloutType = 'info' | 'warning' | 'error' | 'success' | 'tip';
 
 interface CalloutProps {
   type?: CalloutType;
   title?: string;
-  children: React.ReactNode;
+  children: ComponentChildren;
 }
+
+const CalloutIcon: FunctionComponent<{ type: CalloutType; className?: string }> = ({ type, className }) => {
+  const props = { className, size: 20, strokeWidth: 2.5 };
+
+  switch (type) {
+    case 'warning':
+      return <AlertCircle {...props} />;
+    case 'error':
+      return <XCircle {...props} />;
+    case 'success':
+      return <CheckCircle {...props} />;
+    case 'tip':
+      return <Lightbulb {...props} />;
+    case 'info':
+    default:
+      return <Info {...props} />;
+  }
+};
 
 const styles = {
   info: {
-    border: 'border-blue-500/20',
-    bg: 'bg-blue-500/10',
-    text: 'text-blue-200',
-    icon: Info,
-    iconColor: 'text-blue-400'
+    container: 'bg-blue-500/5 border-blue-500/30 shadow-lg shadow-blue-500/5',
+    title: 'text-blue-300',
+    text: 'text-blue-100/90',
+    icon: 'text-blue-400',
+    glow: 'group-hover:shadow-blue-500/10'
   },
   warning: {
-    border: 'border-yellow-500/20',
-    bg: 'bg-yellow-500/10',
-    text: 'text-yellow-200',
-    icon: AlertCircle,
-    iconColor: 'text-yellow-400'
+    container: 'bg-yellow-500/5 border-yellow-500/30 shadow-lg shadow-yellow-500/5',
+    title: 'text-yellow-300',
+    text: 'text-yellow-100/90',
+    icon: 'text-yellow-400',
+    glow: 'group-hover:shadow-yellow-500/10'
   },
   error: {
-    border: 'border-red-500/20',
-    bg: 'bg-red-500/10',
-    text: 'text-red-200',
-    icon: XCircle,
-    iconColor: 'text-red-400'
+    container: 'bg-red-500/5 border-red-500/30 shadow-lg shadow-red-500/5',
+    title: 'text-red-300',
+    text: 'text-red-100/90',
+    icon: 'text-red-400',
+    glow: 'group-hover:shadow-red-500/10'
   },
   success: {
-    border: 'border-green-500/20',
-    bg: 'bg-green-500/10',
-    text: 'text-green-200',
-    icon: CheckCircle,
-    iconColor: 'text-green-400'
+    container: 'bg-green-500/5 border-green-500/30 shadow-lg shadow-green-500/5',
+    title: 'text-green-300',
+    text: 'text-green-100/90',
+    icon: 'text-green-400',
+    glow: 'group-hover:shadow-green-500/10'
+  },
+  tip: {
+    container: 'bg-purple-500/5 border-purple-500/30 shadow-lg shadow-purple-500/5',
+    title: 'text-purple-300',
+    text: 'text-purple-100/90',
+    icon: 'text-purple-400',
+    glow: 'group-hover:shadow-purple-500/10'
   }
 };
 
 export const Callout = ({ type = 'info', title, children }: CalloutProps) => {
   const style = styles[type];
-  const Icon = style.icon;
 
   return (
-    <div className={clsx("rounded-lg border p-4 my-6 flex gap-3", style.border, style.bg)}>
-      <div className="shrink-0 mt-0.5">
-        <Icon className={clsx("w-5 h-5", style.iconColor)} />
+    <div className={clsx(
+      "group relative rounded-xl border p-5 my-6 flex gap-4 transition-all duration-300",
+      style.container,
+      style.glow
+    )}>
+      <div className="flex-shrink-0 mt-0.5">
+        <div className={clsx("p-2 rounded-lg bg-surface-900/50", style.icon)}>
+          <CalloutIcon type={type} className="w-5 h-5" />
+        </div>
       </div>
-      <div className={clsx("text-sm leading-relaxed", style.text)}>
-        {title && <strong className="block mb-1 text-white">{title}</strong>}
-        {children}
+      <div className="flex-1 min-w-0">
+        {title && (
+          <h4 className={clsx("font-semibold mb-2 text-base", style.title)}>
+            {title}
+          </h4>
+        )}
+        <div className={clsx("text-sm leading-relaxed prose prose-invert max-w-none", style.text)}>
+          {children}
+        </div>
       </div>
     </div>
   );
