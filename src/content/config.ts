@@ -1,14 +1,14 @@
 import { defineCollection, z } from 'astro:content';
 
-const wiki = defineCollection({
+const docs = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
-    order: z.number().optional(),
-    category: z.string().optional(),
-    lastUpdated: z.date().optional(),
+    weight: z.number().optional(),
+    date: z.string().optional(),
+    type: z.string().optional(),
   }),
 });
 
-export const collections = { wiki };
+export const collections = { docs };

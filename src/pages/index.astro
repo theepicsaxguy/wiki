@@ -1,107 +1,24 @@
 ---
-import { getCollection } from 'astro:content';
 import WikiLayout from '../layouts/WikiLayout.astro';
-
-const allPages = await getCollection('wiki');
-
-// Sort by order field
-const sortedPages = allPages.sort((a, b) => {
-  if (a.data.order !== undefined && b.data.order !== undefined) {
-    return a.data.order - b.data.order;
-  }
-  if (a.data.order !== undefined) return -1;
-  if (b.data.order !== undefined) return 1;
-  return a.data.title.localeCompare(b.data.title);
-});
-
-// Group by category
-const pagesByCategory = sortedPages.reduce((acc, page) => {
-  const category = page.data.category || 'General';
-  if (!acc[category]) acc[category] = [];
-  acc[category].push(page);
-  return acc;
-}, {} as Record<string, typeof sortedPages>);
+import Card from '../components/mdx/Card.astro';
+import CardGrid from '../components/mdx/CardGrid.astro';
 ---
 
-<WikiLayout title="goingdark.social Wiki" description="Community documentation for goingdark.social">
+<WikiLayout title="Home - goingdark.social Wiki" description="Community documentation for goingdark.social">
   <div class="wiki-content">
-    <h1>goingdark.social Wiki</h1>
+    <h1>goingdark.social - Community Wiki</h1>
 
     <p class="text-xl text-text-main mb-8">
-      Welcome to the community documentation for goingdark.social, a privacy-focused Mastodon instance.
+      Everything you need in one place. Whether you are looking for the rules, figuring out how to set up your profile, or curious about how we run the servers, you're in the right spot.
     </p>
 
-    <div class="grid md:grid-cols-2 gap-6 my-12 not-prose">
-      {Object.entries(pagesByCategory).map(([category, pages]) => (
-        <div class="bg-surface-900 border border-surface-700 rounded-xl p-6">
-          <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            {category === 'Guides' && (
-              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            )}
-            {category === 'Policies' && (
-              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            )}
-            {category === 'General' && (
-              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            )}
-            {category}
-          </h2>
-          <ul class="space-y-2">
-            {pages.map(page => (
-              <li>
-                <a
-                  href={`/wiki/${page.slug}`}
-                  class="block p-3 rounded-lg bg-surface-800/50 hover:bg-surface-800 border border-surface-700/50 hover:border-primary/50 transition-all duration-200 group"
-                >
-                  <div class="font-medium text-white group-hover:text-primary transition-colors">
-                    {page.data.title}
-                  </div>
-                  {page.data.description && (
-                    <div class="text-sm text-text-muted mt-1">
-                      {page.data.description}
-                    </div>
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-
-    <div class="mt-12 p-6 bg-gradient-to-br from-surface-800/50 to-surface-900/50 border border-surface-700 rounded-xl">
-      <h2 class="text-xl font-semibold text-white mb-3">About This Wiki</h2>
-      <p class="text-text-muted mb-4">
-        This wiki is maintained by and for the goingdark.social community. It contains documentation about our instance, guides for using Mastodon, and community policies.
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <a
-          href="https://goingdark.social"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-purple-600 hover:from-primary-hover hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-          Visit Instance
-        </a>
-        <a
-          href="mailto:admin@goingdark.social"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-surface-800 hover:bg-surface-700 border border-surface-600 text-white font-medium rounded-lg transition-all duration-200"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          Contact Admin
-        </a>
-      </div>
-    </div>
+    <CardGrid cols={2}>
+      <Card title="Read the Docs" icon="📖" href="/docs/">
+        Check out our documentation for rules and guides.
+      </Card>
+      <Card title="Instance Home" icon="🚀" href="https://goingdark.social/">
+        Head back to the timeline at goingdark.social.
+      </Card>
+    </CardGrid>
   </div>
 </WikiLayout>
