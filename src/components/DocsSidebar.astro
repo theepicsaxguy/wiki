@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+
+// Get all docs pages
+const allDocs = await getCollection('docs');
+
+// Build a hierarchical structure
+type NavItem = {
+  title: string;
+  slug: string;
+  weight?: number;
+  children: NavItem[];
+};
+
+const navStructure: Record<string, NavItem> = {};
+
+allDocs.forEach(doc => {
+  const pathParts = doc.slug.split('/');
+  const isIndex = pathParts[pathParts.length - 1] === 'index';
+
+  // Build the path to this item
+  let current = navStructure;
+  const itemPath: string[] = [];
+
+  pathParts.forEach((part, index) => {
+    itemPath.push(part);
+    const key = itemPath.join('/');
+
+    if (!current[key]) {
+      current[key] = {
+        title: doc.data.title,
+        slug: doc.slug,
+        weight: doc.data.weight || 999,
+        children: {}
+      };
+    } else if (isIndex && index === pathParts.length - 1) {
+      // Update with index data
+      current[key].title = doc.data.title;
+      current[key].weight = doc.data.weight || current[key].weight;
+    }
+  });
+});
+
+// Convert to sorted array
+function sortAndFlatten(items: Record<string, NavItem>): NavItem[] {
+  return Object.values(items)
+    .sort((a, b) => (a.weight || 999) - (b.weight || 999))
+    .map(item => ({
+      ...item,
+      children: sortAndFlatten(item.children || {})
+    }));
+}
+
+const navigation = sortAndFlatten(navStructure);
+
+// Get current page
+const currentPath = Astro.url.pathname.replace('/docs/', '').replace(/\/$/, '');
+
+function isActive(slug: string): boolean {
+  return currentPath === slug || currentPath.startsWith(slug + '/');
+}
+---
+
+<nav class="space-y-1" aria-label="Documentation navigation">
+  {navigation.map(section => {
+    const sectionActive = isActive(section.slug);
+    const hasChildren = Object.keys(section.children).length > 0;
+
+    return (
+      <div class="space-y-1">
+        <a
+          href={`/docs/${section.slug}`}
+          class:list={[
+            "block px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+            sectionActive
+              ? "bg-primary/10 text-primary"
+              : "text-text-main hover:bg-surface-800 hover:text-white"
+          ]}
+        >
+          {section.title}
+        </a>
+
+        {hasChildren && (
+          <div class="ml-3 pl-3 border-l border-surface-700/50 space-y-1">
+            {Object.values(section.children)
+              .sort((a, b) => (a.weight || 999) - (b.weight || 999))
+              .filter(child => !child.slug.endsWith('/index'))
+              .map(child => (
+                <a
+                  href={`/docs/${child.slug}`}
+                  class:list={[
+                    "block px-3 py-1.5 rounded-lg text-sm transition-colors",
+                    isActive(child.slug)
+                      ? "text-primary font-medium"
+                      : "text-text-muted hover:text-white hover:bg-surface-800/50"
+                  ]}
+                >
+                  {child.title}
+                </a>
+              ))
+            }
+          </div>
+        )}
+      </div>
+    );
+  })}
+</nav>

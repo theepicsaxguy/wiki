@@ -1,6 +1,6 @@
 ---
 import Navigation from '../components/Navigation.astro';
-import WikiSidebar from '../components/WikiSidebar.astro';
+import DocsSidebar from '../components/DocsSidebar.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 const { title = 'goingdark.social Wiki', description = 'Documentation and wiki for goingdark.social - a privacy-focused Mastodon instance' } = Astro.props;
 const fullTitle = title === 'goingdark.social Wiki' ? title : `${title} | goingdark.social Wiki`;
-const isWikiPage = Astro.url.pathname.startsWith('/wiki');
+const isDocsPage = Astro.url.pathname.startsWith('/docs');
 ---
 
 <!DOCTYPE html>
@@ -29,16 +29,16 @@ const isWikiPage = Astro.url.pathname.startsWith('/wiki');
     <Navigation />
 
     <div class="flex-1 flex max-w-7xl mx-auto w-full">
-      <!-- Wiki Sidebar (Desktop Only) -->
-      {isWikiPage && (
+      <!-- Docs Sidebar (Desktop Only) -->
+      {isDocsPage && (
         <div class="hidden lg:block w-64 flex-shrink-0 border-r border-surface-700/50 px-4 py-8">
-          <WikiSidebar />
+          <DocsSidebar />
         </div>
       )}
 
       <!-- Main Content -->
       <main class="flex-1 w-full min-w-0">
-        <div class={isWikiPage ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12"}>
+        <div class={isDocsPage ? "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12"}>
           <!-- Breadcrumbs -->
           <nav class="mb-8" aria-label="Breadcrumb">
             <ol class="flex items-center gap-2 text-sm text-text-muted">
@@ -89,7 +89,7 @@ const isWikiPage = Astro.url.pathname.startsWith('/wiki');
             <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Quick Links</h3>
             <ul class="space-y-2 text-sm">
               <li>
-                <a href="/rules" class="text-text-muted hover:text-primary transition-colors flex items-center gap-2">
+                <a href="/docs/policies/rules" class="text-text-muted hover:text-primary transition-colors flex items-center gap-2">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
@@ -97,7 +97,7 @@ const isWikiPage = Astro.url.pathname.startsWith('/wiki');
                 </a>
               </li>
               <li>
-                <a href="/privacy" class="text-text-muted hover:text-primary transition-colors flex items-center gap-2">
+                <a href="/docs/legal/privacy" class="text-text-muted hover:text-primary transition-colors flex items-center gap-2">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -143,8 +143,8 @@ const isWikiPage = Astro.url.pathname.startsWith('/wiki');
             <h3 class="text-white font-semibold mb-4 text-sm">Resources</h3>
             <ul class="space-y-3">
               <li><a href="/" class="text-text-muted hover:text-primary transition-colors text-sm">Home</a></li>
-              <li><a href="/rules" class="text-text-muted hover:text-primary transition-colors text-sm">Server Rules</a></li>
-              <li><a href="/privacy" class="text-text-muted hover:text-primary transition-colors text-sm">Privacy Policy</a></li>
+              <li><a href="/docs/policies/rules" class="text-text-muted hover:text-primary transition-colors text-sm">Server Rules</a></li>
+              <li><a href="/docs/legal/privacy" class="text-text-muted hover:text-primary transition-colors text-sm">Privacy Policy</a></li>
               <li><a href="https://joinmastodon.org/" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors text-sm">About Mastodon</a></li>
             </ul>
           </div>
