@@ -1,0 +1,44 @@
+---
+/**
+ * Hero - Starlight-style hero section with radial gradient glow
+ * Creates the "stage" for the homepage
+ */
+import Search from './Search';
+import { getCollection } from 'astro:content';
+
+// Get docs for search
+const allDocs = await getCollection('docs');
+const searchDocs = allDocs.map(doc => ({
+  slug: doc.slug,
+  title: doc.data.title,
+  description: doc.data.description
+}));
+---
+
+<div class="relative py-20 text-center overflow-hidden">
+  <!-- The Glow - Radial gradient bloom for depth -->
+  <div 
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none -z-10 opacity-30"
+    style="background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);"
+    aria-hidden="true"
+  ></div>
+  
+  <h1 class="text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
+    GoingDark <span class="text-primary">Wiki</span>
+  </h1>
+  
+  <p class="text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+    The definitive guide to our privacy-focused Mastodon instance.
+    Learn how to protect your data and master the Fediverse.
+  </p>
+  
+  <!-- Search centered -->
+  <div class="max-w-lg mx-auto mb-4">
+    <Search client:load docs={searchDocs} />
+  </div>
+  
+  <div class="text-sm text-text-subtle flex items-center justify-center gap-2">
+    <kbd class="px-3 py-1.5 bg-surface-800 rounded-lg text-text-muted font-mono text-xs font-semibold">Ctrl+K</kbd>
+    <span>to search</span>
+  </div>
+</div>

@@ -120,7 +120,7 @@ export default function Search({ docs }: SearchProps) {
                 aria-selected={index === selectedIndex}
                 onClick={() => setIsOpen(false)}
               >
-                <div className="flex-shrink-0 w-6 h-6 rounded-md bg-primary/20 flex items-center justify-center text-primary text-xs font-bold mt-0.5">
+                <div className="shrink-0 w-6 h-6 rounded-md bg-primary/20 flex items-center justify-center text-primary text-xs font-bold mt-0.5">
                   {index + 1}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -129,7 +129,7 @@ export default function Search({ docs }: SearchProps) {
                   </div>
                   <div className="text-xs text-slate-400 mt-1 font-mono truncate">{doc.slug}</div>
                 </div>
-                <svg className="w-4 h-4 text-slate-600 group-hover:text-primary transition-colors flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-600 group-hover:text-primary transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </a>

@@ -82,7 +82,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
       {/* Modal - Simplified, using Design System */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+          className="fixed inset-0 z-100 flex items-center justify-center p-4"
           role="presentation"
         >
           {/* Backdrop - Simpler without glassmorphism */}

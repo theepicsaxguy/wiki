@@ -67,16 +67,17 @@ if (currentSlug) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col bg-surface-900 antialiased">
     <Navigation />
 
-    <div class="flex-1 flex max-w-7xl mx-auto w-full">
-      <!-- Docs Sidebar (Desktop Only) -->
-      {isDocsPage && (
-        <div class="hidden lg:block w-72 flex-shrink-0 bg-surface-850 px-6 py-8">
-          <Sidebar />
-        </div>
-      )}
+    <div class="flex-1 w-full">
+      <div class="max-w-360 mx-auto flex items-start relative">
+        <!-- Docs Sidebar (Desktop Only) - Fixed width, sticky -->
+        {isDocsPage && (
+          <aside class="hidden lg:block w-72 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-surface-700 py-8 pr-6">
+            <Sidebar />
+          </aside>
+        )}
 
       <!-- Mobile Sidebar (Drawer) - Available on all pages -->
       <div id="mobile-sidebar-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
@@ -159,9 +160,9 @@ if (currentSlug) {
         </div>
       </div>
 
-      <!-- Main Content -->
-      <main class="flex-1 w-full min-w-0 px-4 sm:px-6 lg:px-8 py-8">
-        <div class="max-w-5xl mx-auto">
+        <!-- Main Content - Centered reading column -->
+        <main class="flex-1 min-w-0 px-4 lg:px-12 py-10">
+          <div class="max-w-4xl mx-auto">
           <!-- Breadcrumbs (only on docs pages) - Now showing actual titles -->
           {Astro.url.pathname !== '/' && breadcrumbPath.length > 0 && (
             <nav class="mb-6" aria-label="Breadcrumb">
@@ -208,7 +209,7 @@ if (currentSlug) {
                   href={`/docs/${prevPage.slug}`}
                   class="flex items-start gap-3 p-5 bg-surface-800 rounded-xl hover:bg-surface-750 transition-all group col-span-1"
                 >
-                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                   </svg>
                   <div class="flex-1 min-w-0">
@@ -228,7 +229,7 @@ if (currentSlug) {
                     <div class="text-xs text-text-subtle mb-1 uppercase tracking-wider font-semibold">Next</div>
                     <div class="font-semibold text-white group-hover:text-primary transition-colors truncate">{nextPage.title}</div>
                   </div>
-                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors mt-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </a>
@@ -259,12 +260,12 @@ if (currentSlug) {
               </span>
             </div>
           </div>
-        </div>
-      </main>
+          </div>
+        </main>
 
-      <!-- Table of Contents Sidebar (Desktop Only) -->
-      <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-6 py-8 bg-surface-850">
-        <div class="space-y-6">
+        <!-- Table of Contents Sidebar (Desktop Only) - Right rail -->
+        <aside class="hidden xl:block w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pl-6">
+          <div class="space-y-6">
           {headings.length > 0 ? (
             <div>
               <h3 class="text-xs font-bold text-text-subtle uppercase tracking-wider mb-4 flex items-center gap-2">
@@ -289,8 +290,9 @@ if (currentSlug) {
               </nav>
             </div>
           ) : null}
-        </div>
-      </aside>
+          </div>
+        </aside>
+      </div>
     </div>
 
     <!-- Footer -->

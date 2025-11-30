@@ -69,7 +69,7 @@ export const Callout = ({ type = 'info', title, children }: CalloutProps) => {
       "rounded-xl border p-6 my-6 flex gap-4",
       style.container
     )}>
-      <div className="flex-shrink-0 mt-0.5">
+      <div className="shrink-0 mt-0.5">
         <div className={clsx("w-10 h-10 rounded-lg flex items-center justify-center bg-surface-900/50", style.icon)}>
           <CalloutIcon type={type} className="w-5 h-5" />
         </div>
