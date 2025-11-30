@@ -11,28 +11,23 @@ const linkProps = href ? { href, target: href.startsWith('http') ? '_blank' : un
 ---
 
 <Tag
-  class="group relative bg-gradient-to-br from-surface-800 to-surface-900 border border-surface-700 rounded-xl p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
+  class="group bg-surface-800 border border-border rounded-lg p-6 hover:border-primary transition-colors"
   {...linkProps}
 >
-  <div class="relative z-10">
-    {icon && (
-      <div class="text-4xl mb-4 filter grayscale group-hover:grayscale-0 transition-all duration-300">
-        {icon}
-      </div>
-    )}
-    <h3 class="text-lg font-semibold text-white mb-3 group-hover:text-primary transition-colors flex items-center gap-2">
-      {title}
-      {href && (
-        <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
-      )}
-    </h3>
-    <div class="text-text-muted text-sm leading-relaxed">
-      <slot />
+  {icon && (
+    <div class="text-4xl mb-4">
+      {icon}
     </div>
+  )}
+  <h3 class="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+    {title}
+    {href && (
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    )}
+  </h3>
+  <div class="text-text-muted text-sm leading-relaxed">
+    <slot />
   </div>
-
-  <!-- Gradient overlay on hover -->
-  <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-600/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 </Tag>

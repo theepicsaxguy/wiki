@@ -37,7 +37,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen flex flex-col">
     <Navigation />
@@ -45,7 +45,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     <div class="flex-1 flex max-w-7xl mx-auto w-full">
       <!-- Docs Sidebar (Desktop Only) -->
       {isDocsPage && (
-        <div class="hidden lg:block w-64 flex-shrink-0 border-r border-surface-700/50 px-4 py-8">
+        <div class="hidden lg:block w-64 flex-shrink-0 border-r border-border px-4 py-8">
           <Sidebar />
         </div>
       )}
@@ -56,7 +56,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
           <!-- Mobile FAB Button -->
           <button
             id="mobile-sidebar-button"
-            class="lg:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-lg flex items-center justify-center transition-all"
+            class="lg:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-primary hover:bg-primary-hover text-white rounded-full shadow-lg flex items-center justify-center transition-colors"
             aria-label="Open navigation menu"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,19 +67,19 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
           <!-- Mobile Drawer -->
           <div id="mobile-sidebar-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
             <!-- Backdrop -->
-            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true"></div>
+            <div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
 
             <!-- Drawer -->
-            <div class="absolute top-0 left-0 h-full w-80 max-w-[85vw] bg-[#0b0e14] border-r border-[#292e3b] shadow-2xl overflow-y-auto">
+            <div class="absolute top-0 left-0 h-full w-80 max-w-[85vw] bg-surface-900 border-r border-border shadow-2xl overflow-y-auto">
               <!-- Header -->
-              <div class="sticky top-0 z-10 bg-[#0b0e14] border-b border-[#292e3b] px-4 py-4 flex items-center justify-between">
+              <div class="sticky top-0 z-10 bg-surface-900 border-b border-border px-4 py-4 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-white">Navigation</h2>
                 <button
                   id="mobile-sidebar-close"
-                  class="p-2 hover:bg-[#1e232f] rounded-lg transition-colors"
+                  class="p-2 hover:bg-surface-800 rounded-lg transition-colors"
                   aria-label="Close menu"
                 >
-                  <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -183,7 +183,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
       </main>
 
       <!-- Table of Contents Sidebar (Desktop Only) -->
-      <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-4 py-8 border-l border-surface-700/50">
+      <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-4 py-8 border-l border-border">
         <div class="space-y-6">
           {headings.length > 0 && (
             <div>
@@ -205,7 +205,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
             </div>
           )}
 
-          <div class="pt-6 border-t border-surface-700/50">
+          <div class="pt-6 border-t border-border">
             <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Quick Links</h3>
             <ul class="space-y-2 text-sm">
               <li>
@@ -239,7 +239,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     </div>
 
     <!-- Footer -->
-    <footer class="bg-surface-900 border-t border-surface-700 mt-auto">
+    <footer class="bg-surface-900 border-t border-border mt-auto">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="md:col-span-2">

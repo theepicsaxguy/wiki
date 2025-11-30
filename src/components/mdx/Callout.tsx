@@ -30,39 +30,34 @@ const CalloutIcon: FunctionComponent<{ type: CalloutType; className?: string }> 
 
 const styles = {
   info: {
-    container: 'bg-blue-500/5 border-blue-500/30 shadow-lg shadow-blue-500/5',
+    container: 'bg-blue-500/5 border-blue-500/30',
     title: 'text-blue-300',
     text: 'text-blue-100/90',
-    icon: 'text-blue-400',
-    glow: 'group-hover:shadow-blue-500/10'
+    icon: 'text-blue-400'
   },
   warning: {
-    container: 'bg-yellow-500/5 border-yellow-500/30 shadow-lg shadow-yellow-500/5',
+    container: 'bg-yellow-500/5 border-yellow-500/30',
     title: 'text-yellow-300',
     text: 'text-yellow-100/90',
-    icon: 'text-yellow-400',
-    glow: 'group-hover:shadow-yellow-500/10'
+    icon: 'text-yellow-400'
   },
   error: {
-    container: 'bg-red-500/5 border-red-500/30 shadow-lg shadow-red-500/5',
+    container: 'bg-red-500/5 border-red-500/30',
     title: 'text-red-300',
     text: 'text-red-100/90',
-    icon: 'text-red-400',
-    glow: 'group-hover:shadow-red-500/10'
+    icon: 'text-red-400'
   },
   success: {
-    container: 'bg-green-500/5 border-green-500/30 shadow-lg shadow-green-500/5',
+    container: 'bg-green-500/5 border-green-500/30',
     title: 'text-green-300',
     text: 'text-green-100/90',
-    icon: 'text-green-400',
-    glow: 'group-hover:shadow-green-500/10'
+    icon: 'text-green-400'
   },
   tip: {
-    container: 'bg-purple-500/5 border-purple-500/30 shadow-lg shadow-purple-500/5',
+    container: 'bg-purple-500/5 border-purple-500/30',
     title: 'text-purple-300',
     text: 'text-purple-100/90',
-    icon: 'text-purple-400',
-    glow: 'group-hover:shadow-purple-500/10'
+    icon: 'text-purple-400'
   }
 };
 
@@ -71,9 +66,8 @@ export const Callout = ({ type = 'info', title, children }: CalloutProps) => {
 
   return (
     <div className={clsx(
-      "group relative rounded-xl border p-5 my-6 flex gap-4 transition-all duration-300",
-      style.container,
-      style.glow
+      "rounded-lg border p-5 my-6 flex gap-4",
+      style.container
     )}>
       <div className="flex-shrink-0 mt-0.5">
         <div className={clsx("p-2 rounded-lg bg-surface-900/50", style.icon)}>

@@ -39,12 +39,12 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
           <a
             href={`/docs/${node.slug}`}
             class:list={[
-              "block px-3 py-2 rounded-lg text-sm font-medium transition-all border-l-3",
+              "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
               active
-                ? "bg-indigo-500/20 text-white border-indigo-400"
+                ? "bg-primary text-white"
                 : isParentNode
-                ? "bg-indigo-500/10 text-slate-200 border-indigo-500/50"
-                : "text-slate-300 hover:bg-[#1e232f] hover:text-white border-transparent hover:border-slate-600"
+                ? "text-white"
+                : "text-text-muted hover:text-white"
             ]}
           >
             <span class="flex items-center gap-2">
@@ -64,7 +64,7 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
           </a>
 
           {hasChildren && (
-            <ul class="mt-1 ml-4 pl-4 border-l-2 border-[#292e3b] space-y-1">
+            <ul class="mt-1 ml-4 pl-4 border-l-2 border-border space-y-1">
               {node.children.filter(child => !child.slug.endsWith('/index')).map(child => {
                 const childActive = isActive(child.slug);
                 const childIsParent = isParent(child.slug);
@@ -75,19 +75,19 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
                     <a
                       href={`/docs/${child.slug}`}
                       class:list={[
-                        "block px-3 py-1.5 rounded-lg text-sm transition-all border-l-2",
+                        "block px-3 py-1.5 rounded-md text-sm transition-colors",
                         childActive
-                          ? "text-white font-medium bg-indigo-500/10 border-indigo-400"
+                          ? "text-white font-medium bg-primary"
                           : childIsParent
-                          ? "text-slate-200 bg-indigo-500/5 border-indigo-500/50"
-                          : "text-slate-400 hover:text-white hover:bg-[#1e232f]/50 border-transparent"
+                          ? "text-white"
+                          : "text-text-muted hover:text-white"
                       ]}
                     >
                       {child.title}
                     </a>
 
                     {childHasChildren && (
-                      <ul class="mt-1 ml-4 pl-4 border-l-2 border-[#292e3b] space-y-1">
+                      <ul class="mt-1 ml-4 pl-4 border-l-2 border-border space-y-1">
                         {child.children.filter(grandchild => !grandchild.slug.endsWith('/index')).map(grandchild => {
                           const grandchildActive = isActive(grandchild.slug);
 
@@ -96,10 +96,10 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
                               <a
                                 href={`/docs/${grandchild.slug}`}
                                 class:list={[
-                                  "block px-3 py-1.5 rounded-lg text-sm transition-all border-l-2",
+                                  "block px-3 py-1.5 rounded-md text-sm transition-colors",
                                   grandchildActive
-                                    ? "text-white font-medium bg-indigo-500/10 border-indigo-400"
-                                    : "text-slate-400 hover:text-white hover:bg-[#1e232f]/50 border-transparent"
+                                    ? "text-white font-medium bg-primary"
+                                    : "text-text-muted hover:text-white"
                                 ]}
                               >
                                 {grandchild.title}

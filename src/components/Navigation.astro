@@ -9,19 +9,17 @@ const navItems = [
 ];
 ---
 
-<nav class="sticky top-0 z-50 bg-surface-900/95 backdrop-blur-sm border-b border-surface-700/50 shadow-lg">
+<nav class="sticky top-0 z-50 bg-surface-900 border-b border-border">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo and Brand -->
       <div class="flex items-center flex-shrink-0">
         <a href="/" class="flex items-center gap-3 group">
-          <div class="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/50 transition-all duration-300">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-          </div>
+          <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
           <div class="hidden sm:block">
-            <h1 class="text-lg font-bold text-white group-hover:text-primary transition-colors">goingdark.social</h1>
+            <h1 class="text-lg font-bold text-white">goingdark.social</h1>
             <p class="text-xs text-text-muted">Community Wiki</p>
           </div>
         </a>
@@ -35,9 +33,9 @@ const navItems = [
           return (
             <a
               href={item.path}
-              class={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+              class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-primary text-white shadow-lg shadow-primary/30'
+                  ? 'bg-primary text-white'
                   : 'text-text-muted hover:text-white hover:bg-surface-800'
               }`}
             >
@@ -46,13 +44,13 @@ const navItems = [
           );
         })}
 
-        <div class="w-px h-6 bg-surface-700 mx-2"></div>
+        <div class="w-px h-6 bg-border mx-2"></div>
 
         <a
           href="https://goingdark.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="px-4 py-2 rounded-lg text-sm font-medium bg-surface-800 hover:bg-surface-700 border border-surface-600 text-white transition-all duration-200 flex items-center gap-2"
+          class="px-4 py-2 rounded-full text-sm font-medium bg-surface-800 hover:bg-surface-700 border border-border text-white transition-colors flex items-center gap-2"
         >
           Visit Instance
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,7 +73,7 @@ const navItems = [
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-surface-700/50 bg-surface-900">
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-surface-900">
     <div class="px-4 py-3 space-y-2">
       {navItems.map(item => {
         const isActive = currentPath === item.path ||
@@ -83,7 +81,7 @@ const navItems = [
         return (
           <a
             href={item.path}
-            class={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+            class={`block px-4 py-3 rounded-md text-sm font-medium transition-colors ${
               isActive
                 ? 'bg-primary text-white'
                 : 'text-text-muted hover:text-white hover:bg-surface-800'
@@ -97,7 +95,7 @@ const navItems = [
         href="https://goingdark.social"
         target="_blank"
         rel="noopener noreferrer"
-        class="block px-4 py-3 rounded-lg text-sm font-medium bg-surface-800 border border-surface-600 text-white text-center"
+        class="block px-4 py-3 rounded-md text-sm font-medium bg-surface-800 border border-border text-white text-center"
       >
         Visit Instance →
       </a>
