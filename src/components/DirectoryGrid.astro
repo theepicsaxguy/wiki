@@ -1,0 +1,117 @@
+---
+/**
+ * DirectoryGrid - Category browsing grid for documentation sections
+ * Extracted from index.astro to support MDX-driven architecture
+ */
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+
+// Get all docs
+// Note: Astro's content layer caches this data, so multiple getCollection calls
+// in different components don't cause duplicate fetches
+const allDocs = await getCollection('docs');
+
+// Group docs by top-level folder with proper structure
+interface Section {
+  title: string;
+  folder: string;
+  pages: typeof allDocs;
+  indexPage?: typeof allDocs[0];
+}
+
+const sections: Section[] = [];
+const folderMap = new Map<string, Section>();
+
+allDocs.forEach(doc => {
+  const [folder] = doc.slug.split('/');
+  if (folder === 'index') return; // Skip root index
+
+  if (!folderMap.has(folder)) {
+    const section: Section = {
+      title: folder.charAt(0).toUpperCase() + folder.slice(1),
+      folder: folder,
+      pages: [],
+    };
+    folderMap.set(folder, section);
+    sections.push(section);
+  }
+
+  const section = folderMap.get(folder);
+  
+  if (section) {
+    // Check if this is the index page for the folder
+    if (doc.slug === folder || doc.slug === `${folder}/index`) {
+      section.indexPage = doc;
+      section.title = doc.data.title; // Use actual title from index
+    } else {
+      section.pages.push(doc);
+    }
+  }
+});
+---
+
+<section aria-label="Documentation categories">
+  <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+    <Icon name="folder" size={24} class="text-primary" />
+    <span>Browse by Category</span>
+  </h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {sections.map(section => (
+      <article class="bg-surface border border-border rounded-xl p-6 hover:border-primary/50 transition-all group">
+        {/* Category Header */}
+        <div class="mb-4 pb-4 border-b border-border">
+          {section.indexPage ? (
+            <a href={`/docs/${section.folder}`} class="flex items-center justify-between group">
+              <h3 class="text-xl font-bold text-white group-hover:text-primary transition-colors flex items-center gap-2">
+                <Icon name="folder" size={20} class="text-text-muted" />
+                {section.title}
+              </h3>
+              <span class="text-xs font-mono text-text-subtle bg-background px-2.5 py-1 rounded-xl border border-border">
+                {section.pages.length} pages
+              </span>
+            </a>
+          ) : (
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                <Icon name="folder" size={20} class="text-text-muted" />
+                {section.title}
+              </h3>
+              <span class="text-xs font-mono text-text-subtle bg-background px-2.5 py-1 rounded-xl border border-border">
+                {section.pages.length} pages
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Top Pages Preview (shows 3-4 pages) */}
+        <ul class="space-y-3">
+          {section.pages.slice(0, 4).map(page => (
+            <li>
+              <a 
+                href={`/docs/${page.slug}`} 
+                class="flex items-start gap-2 text-sm text-text-muted hover:text-white transition-colors group/link"
+              >
+                <span class="text-primary/60 flex-shrink-0 mt-0.5">▹</span>
+                <span class="group-hover/link:translate-x-1 transition-transform">
+                  {page.data.title}
+                </span>
+              </a>
+            </li>
+          ))}
+          {section.pages.length > 4 && (
+            <li>
+              <a 
+                href={`/docs/${section.folder}`} 
+                class="text-xs text-primary hover:text-primary-hover font-medium flex items-center gap-1"
+              >
+                <span>View all {section.pages.length} pages</span>
+                <Icon name="arrow-right" size={12} />
+              </a>
+            </li>
+          )}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>
