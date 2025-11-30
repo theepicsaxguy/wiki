@@ -86,12 +86,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
           <div
             class="absolute inset-0 bg-black/80 cursor-default"
             onClick={() => setIsOpen(false)}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') setIsOpen(false);
-            }}
-            role="button"
-            tabIndex={0}
-            aria-label="Close modal"
+            aria-hidden="true"
           />
 
           {/* Modal Content - Design System colors */}

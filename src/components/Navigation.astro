@@ -40,7 +40,7 @@ const docsForSearch = allDocs.map(doc => ({
       <div class="hidden md:flex items-center gap-3 flex-1 justify-end max-w-2xl">
         <!-- Search Bar -->
         <div class="flex-1 max-w-md">
-          <Search docs={docsForSearch} client:load />
+          <Search docs={docsForSearch} client:idle />
         </div>
 
         <div class="w-px h-6 bg-border"></div>
