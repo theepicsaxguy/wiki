@@ -70,16 +70,7 @@ if (currentSlug) {
   <body class="min-h-screen flex flex-col bg-surface-900 antialiased">
     <Navigation />
 
-    <div class="flex-1 w-full">
-      <div class="max-w-360 mx-auto flex items-start relative">
-        <!-- Docs Sidebar (Desktop Only) - Fixed width, sticky -->
-        {isDocsPage && (
-          <aside class="hidden lg:block w-72 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-surface-700 py-8 pr-6">
-            <Sidebar />
-          </aside>
-        )}
-
-      <!-- Mobile Sidebar (Drawer) - Available on all pages -->
+    <!-- Mobile Sidebar (Drawer) - Available on all pages -->
       <div id="mobile-sidebar-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
         <!-- Backdrop with glassmorphism -->
         <div class="absolute inset-0 bg-black/70 backdrop-blur-md" aria-hidden="true"></div>
@@ -160,9 +151,25 @@ if (currentSlug) {
         </div>
       </div>
 
+    <!-- Three Column Layout Container -->
+    <div class="flex-1 w-full">
+      <div class:list={[
+        "mx-auto flex items-start relative",
+        isDocsPage ? "max-w-[90rem]" : "max-w-7xl"
+      ]}>
+        <!-- Docs Sidebar (Desktop Only) - Fixed width, sticky -->
+        {isDocsPage && (
+          <aside class="hidden lg:block w-72 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-surface-700 py-8 pr-6 pl-4">
+            <Sidebar />
+          </aside>
+        )}
+
         <!-- Main Content - Centered reading column -->
         <main class="flex-1 min-w-0 px-4 lg:px-12 py-10">
-          <div class="max-w-4xl mx-auto">
+          <div class:list={[
+            "mx-auto",
+            isDocsPage ? "max-w-4xl" : "w-full"
+          ]}>
           <!-- Breadcrumbs (only on docs pages) - Now showing actual titles -->
           {Astro.url.pathname !== '/' && breadcrumbPath.length > 0 && (
             <nav class="mb-6" aria-label="Breadcrumb">
@@ -264,7 +271,7 @@ if (currentSlug) {
         </main>
 
         <!-- Table of Contents Sidebar (Desktop Only) - Right rail -->
-        <aside class="hidden xl:block w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pl-6">
+        <aside class="hidden xl:block w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pl-6 border-l border-surface-700 pr-4">
           <div class="space-y-6">
           {headings.length > 0 ? (
             <div>
