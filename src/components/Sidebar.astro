@@ -27,7 +27,7 @@ const isHome = Astro.url.pathname === '/';
   <a
     href="/"
     class:list={[
-      "group block px-3 py-2 rounded-[12px] text-sm font-medium transition-all",
+      "group block px-3 py-2 rounded-xl text-sm font-medium transition-all",
       isHome
         ? "bg-primary text-white"
         : "text-text-muted hover:text-white hover:bg-surface"
@@ -57,7 +57,7 @@ const isHome = Astro.url.pathname === '/';
           <a
             href={`/docs/${node.slug}`}
             class:list={[
-              "group relative block px-3 py-2 rounded-[12px] text-sm font-medium transition-all",
+              "group relative block px-3 py-2 rounded-xl text-sm font-medium transition-all",
               active
                 ? "bg-primary text-white border-l-2 border-primary"
                 : isParentNode
@@ -88,7 +88,7 @@ const isHome = Astro.url.pathname === '/';
                     <a
                       href={`/docs/${child.slug}`}
                       class:list={[
-                        "group relative block px-3 py-1.5 rounded-[12px] text-sm transition-all",
+                        "group relative block px-3 py-1.5 rounded-xl text-sm transition-all",
                         childActive
                           ? "text-white font-medium bg-primary/10 border-l-2 border-primary"
                           : childIsParent
@@ -112,7 +112,7 @@ const isHome = Astro.url.pathname === '/';
                               <a
                                 href={`/docs/${grandchild.slug}`}
                                 class:list={[
-                                  "group relative block px-3 py-1.5 rounded-[12px] text-sm transition-all",
+                                  "group relative block px-3 py-1.5 rounded-xl text-sm transition-all",
                                   grandchildActive
                                     ? "text-white font-medium bg-primary/10 border-l-2 border-primary"
                                     : "text-text-muted hover:text-white hover:bg-surface/30 hover:border-l-2 hover:border-primary/20"
