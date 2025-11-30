@@ -7,6 +7,8 @@ import { getCollection } from 'astro:content';
 import Search from './Search';
 
 // Get all docs for search functionality
+// Note: Astro's content layer caches this data, so multiple getCollection calls
+// in different components don't cause duplicate fetches
 const allDocs = await getCollection('docs');
 
 // Prepare search data

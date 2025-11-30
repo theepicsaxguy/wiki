@@ -7,6 +7,8 @@ import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 
 // Get all docs
+// Note: Astro's content layer caches this data, so multiple getCollection calls
+// in different components don't cause duplicate fetches
 const allDocs = await getCollection('docs');
 
 // Group docs by top-level folder with proper structure
@@ -34,14 +36,16 @@ allDocs.forEach(doc => {
     sections.push(section);
   }
 
-  const section = folderMap.get(folder)!;
+  const section = folderMap.get(folder);
   
-  // Check if this is the index page for the folder
-  if (doc.slug === folder || doc.slug === `${folder}/index`) {
-    section.indexPage = doc;
-    section.title = doc.data.title; // Use actual title from index
-  } else {
-    section.pages.push(doc);
+  if (section) {
+    // Check if this is the index page for the folder
+    if (doc.slug === folder || doc.slug === `${folder}/index`) {
+      section.indexPage = doc;
+      section.title = doc.data.title; // Use actual title from index
+    } else {
+      section.pages.push(doc);
+    }
   }
 });
 ---

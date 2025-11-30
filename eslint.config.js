@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import react from 'eslint-plugin-react';
 
 export default [
   js.configs.recommended,
@@ -12,6 +13,9 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
       globals: {
         // Browser globals
@@ -38,6 +42,7 @@ export default [
     plugins: {
       '@typescript-eslint': tsPlugin,
       'jsx-a11y': jsxA11y,
+      'react': react,
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
@@ -50,6 +55,13 @@ export default [
       'jsx-a11y/label-has-associated-control': ['error', {
         assert: 'either',
       }],
+      // Note: react/forbid-elements rule is available to enforce component usage
+      // Currently disabled for implementation files but can be enabled for content files
+      // 'react/forbid-elements': ['warn', {
+      //   forbid: [
+      //     { element: 'div', message: 'Use semantic components like <Box> or <Card> instead of <div>' },
+      //   ],
+      // }],
     },
   },
   {
@@ -61,6 +73,9 @@ export default [
       '*.config.js',
       '*.config.mjs',
       '*.config.ts',
+      // MDX files are excluded from linting for now due to parser complexity
+      // Manual code review should ensure semantic component usage in MDX files
+      '**/*.mdx',
     ],
   },
 ];
