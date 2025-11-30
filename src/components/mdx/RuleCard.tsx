@@ -80,16 +80,18 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
       {isOpen && (
         <div
           class="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          onClick={() => setIsOpen(false)}
           role="presentation"
         >
           {/* Backdrop - Simpler without glassmorphism */}
-          <div class="absolute inset-0 bg-black/80" />
+          <button
+            class="absolute inset-0 bg-black/80 cursor-default"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close modal"
+          />
 
           {/* Modal Content - Design System colors */}
           <div
             class="relative bg-surface border border-border rounded-[16px] max-w-2xl w-full max-h-[85vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
