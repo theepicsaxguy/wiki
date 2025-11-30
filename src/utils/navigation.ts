@@ -10,7 +10,7 @@ export type NavItem = {
 /**
  * Build a hierarchical navigation tree from flat docs collection
  */
-export function buildNavigationTree(docs: any[]): NavItem[] {
+export function buildNavigationTree(docs: Array<{ slug: string; data: { title: string; weight?: number } }>): NavItem[] {
   const tree: Map<string, NavItem> = new Map();
 
   // First pass: create all nodes

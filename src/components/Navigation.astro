@@ -2,15 +2,6 @@
 import { getCollection } from 'astro:content';
 import Search from './Search.tsx';
 
-const currentPath = Astro.url.pathname;
-
-const navItems = [
-  { name: 'Wiki Home', path: '/' },
-  { name: 'Getting Started', path: '/docs/user/getting-started' },
-  { name: 'Rules', path: '/docs/policies/rules' },
-  { name: 'Privacy', path: '/docs/legal/privacy' },
-];
-
 // Get all docs for search
 const allDocs = await getCollection('docs');
 const docsForSearch = allDocs.map(doc => ({

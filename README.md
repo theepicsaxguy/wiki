@@ -15,7 +15,7 @@ This wiki provides essential information about our Mastodon instance, including:
 
 - **Astro** - Static site generator
 - **MDX** - Markdown with JSX components
-- **Preact** - Lightweight React alternative for interactive components
+- **react** - Lightweight React alternative for interactive components
 - **Tailwind CSS** - Utility-first CSS framework
 
 ## Development

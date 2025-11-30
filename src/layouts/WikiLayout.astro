@@ -125,7 +125,6 @@ if (currentSlug) {
             {isDocsPage ? (
               <Sidebar />
             ) : (
-              <!-- Simple navigation for non-docs pages -->
               <nav aria-label="Main navigation">
                 <ul class="space-y-1">
                   <li>
@@ -275,7 +274,7 @@ if (currentSlug) {
       <!-- Table of Contents Sidebar (Desktop Only) -->
       <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-4 py-8 border-l border-border">
         <div class="space-y-6">
-          {headings.length > 0 && (
+          {headings.length > 0 ? (
             <div>
               <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">On this page</h3>
               <nav id="table-of-contents" class="space-y-2 text-sm" aria-label="Table of contents">
@@ -293,7 +292,7 @@ if (currentSlug) {
                 ))}
               </nav>
             </div>
-          )}
+          ) : null}
 
 
         </div>
@@ -380,7 +379,7 @@ if (currentSlug) {
 
         mobileClose?.addEventListener('click', closeSidebar);
         mobileOverlay.addEventListener('click', (e) => {
-          if (e.target === mobileOverlay || e.target.classList.contains('bg-black/60')) {
+          if (e.target === mobileOverlay || (e.target instanceof HTMLElement && e.target.classList.contains('bg-black/60'))) {
             closeSidebar();
           }
         });
@@ -403,7 +402,7 @@ if (currentSlug) {
           const href = link.getAttribute('href');
           if (!href) return null;
           return document.querySelector(href);
-        }).filter(Boolean);
+        }).filter((el): el is Element => el !== null);
 
         if (headings.length === 0) return;
 
@@ -432,10 +431,11 @@ if (currentSlug) {
       });
 
       // Smooth scroll for anchor links
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href') || '');
+          const href = this.getAttribute('href');
+          const target = href ? document.querySelector(href) : null;
           if (target) {
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }

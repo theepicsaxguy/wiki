@@ -1,5 +1,5 @@
-import type { ComponentChildren, FunctionComponent } from 'preact';
-import { AlertCircle, CheckCircle, Info, XCircle, Lightbulb } from 'lucide-preact';
+import type { ReactNode } from 'react';
+import { AlertCircle, CheckCircle, Info, XCircle, Lightbulb } from 'lucide-react';
 import { clsx } from 'clsx';
 
 type CalloutType = 'info' | 'warning' | 'error' | 'success' | 'tip';
@@ -7,10 +7,10 @@ type CalloutType = 'info' | 'warning' | 'error' | 'success' | 'tip';
 interface CalloutProps {
   type?: CalloutType;
   title?: string;
-  children: ComponentChildren;
+  children: ReactNode;
 }
 
-const CalloutIcon: FunctionComponent<{ type: CalloutType; className?: string }> = ({ type, className }) => {
+const CalloutIcon = ({ type, className }: { type: CalloutType; className?: string }) => {
   const props = { className, size: 20, strokeWidth: 2.5 };
 
   switch (type) {
