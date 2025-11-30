@@ -4,37 +4,8 @@ description: Welcome to the goingdark.social documentation.
 weight: 10
 ---
 
-import Card from '../../components/mdx/Card.astro';
-import CardGrid from '../../components/mdx/CardGrid.astro';
+import SearchHero from '../../components/SearchHero.astro';
+import DirectoryGrid from '../../components/DirectoryGrid.astro';
 
-Welcome to the **goingdark.social** wiki.
-
-This is the knowledge base for our community. It collects our ground rules, getting started guides, federation policies, and technical notes all in one place.
-
-Since we believe in transparency, this wiki is open source. Spot a mistake? Feel free to suggest a change on GitHub.
-
-## Explore Sections
-
-<CardGrid>
-  <Card title="Overview" href="/docs/overview/">
-    What goingdark.social is all about and why we exist.
-  </Card>
-  <Card title="Policies" href="/docs/policies/">
-    The rules of the road and our moderation philosophy.
-  </Card>
-  <Card title="Operations" href="/docs/operations/">
-    The tech stack and infrastructure behind the scenes.
-  </Card>
-  <Card title="Transparency" href="/docs/transparency/">
-    Financial reports, decision logs, and openness.
-  </Card>
-  <Card title="User Guides" href="/docs/user/">
-    Tutorials on how to get started and use Mastodon.
-  </Card>
-  <Card title="Legal" href="/docs/legal/">
-    Privacy policy, terms of service, and compliance.
-  </Card>
-  <Card title="Community" href="/docs/community/">
-    How to contribute and get in touch.
-  </Card>
-</CardGrid>
+<SearchHero />
+<DirectoryGrid />
