@@ -15,6 +15,10 @@
 
   --font-sans: Roboto, system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* Gradient colors for 2025 aesthetic */
+  --color-gradient-start: #6366f1;
+  --color-gradient-end: #8b5cf6;
 }
 
 /* Base Styles */
@@ -53,10 +57,34 @@ body {
   background: var(--color-surface-600);
 }
 
+/* Glassmorphism Utilities */
+.glass-effect {
+  background: rgba(25, 27, 34, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-border {
+  border: 1px solid rgba(99, 100, 255, 0.1);
+}
+
+/* Gradient Button Styles */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, var(--color-primary-hover), #a78bfa);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
 /* Wiki Content Styles */
 .wiki-content {
   color: var(--color-text-main);
-  line-height: 1.6;
+  line-height: 1.7;
+  max-width: 75ch;
 }
 
 .wiki-content h1 {
