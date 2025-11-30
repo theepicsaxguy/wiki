@@ -2,8 +2,9 @@
 import { getCollection } from 'astro:content';
 import WikiLayout from '../layouts/WikiLayout.astro';
 import Search from '../components/Search';
+import Icon from '../components/Icon.astro';
 
-// 1. Get all docs
+// Get all docs
 const allDocs = await getCollection('docs');
 
 // Prepare search data
@@ -13,135 +14,130 @@ const searchDocs = allDocs.map(doc => ({
   description: doc.data.description
 }));
 
-// 2. Group docs by top-level folder (The "Wiki Hub" Logic)
-const sections = allDocs.reduce((acc, doc) => {
+// Group docs by top-level folder with proper structure
+interface Section {
+  title: string;
+  folder: string;
+  pages: typeof allDocs;
+  indexPage?: typeof allDocs[0];
+}
+
+const sections: Section[] = [];
+const folderMap = new Map<string, Section>();
+
+allDocs.forEach(doc => {
   const [folder] = doc.slug.split('/');
-  if (folder === 'index') return acc; // Skip root index
+  if (folder === 'index') return; // Skip root index
 
-  if (!acc[folder]) {
-    acc[folder] = {
+  if (!folderMap.has(folder)) {
+    const section: Section = {
       title: folder.charAt(0).toUpperCase() + folder.slice(1),
-      pages: []
+      folder: folder,
+      pages: [],
     };
+    folderMap.set(folder, section);
+    sections.push(section);
   }
-  // Add page to section (exclude index pages of folders)
-  if (!doc.slug.endsWith('/index')) {
-    acc[folder].pages.push(doc);
-  }
-  return acc;
-}, {} as Record<string, { title: string; pages: any[] }>);
 
-// 3. Get Recent Updates (showing first 5 for "Pulse" effect)
-const recentDocs = allDocs
-  .filter(d => !d.slug.includes('index'))
-  .slice(0, 5);
+  const section = folderMap.get(folder)!;
+  
+  // Check if this is the index page for the folder
+  if (doc.slug === folder || doc.slug === `${folder}/index`) {
+    section.indexPage = doc;
+    section.title = doc.data.title; // Use actual title from index
+  } else {
+    section.pages.push(doc);
+  }
+});
 
 ---
 
 <WikiLayout title="Knowledge Base">
 
-  <!-- 1. THE COMMAND CENTER (Hero) -->
-  <header class="mb-12">
-    <h1 class="text-3xl font-bold text-white mb-6">goingdark.social <span class="text-indigo-400">Wiki</span></h1>
+  <!-- SEARCH-FIRST HERO -->
+  <header class="mb-16 text-center max-w-3xl mx-auto">
+    <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">
+      goingdark.social Wiki
+    </h1>
+    <p class="text-lg text-text-muted mb-8">
+      Documentation for our privacy-focused Mastodon instance
+    </p>
 
-    <!-- Big Search Visual -->
-    <div class="mb-8">
+    <!-- DOMINANT SEARCH BAR -->
+    <div class="relative">
       <Search client:load docs={searchDocs} />
+      <div class="mt-3 text-sm text-text-subtle flex items-center justify-center gap-2">
+        <kbd class="px-2 py-1 bg-surface border border-border rounded-[12px] text-text-muted font-mono text-xs">Ctrl+K</kbd>
+        <span>to search</span>
+      </div>
     </div>
-
-    <!-- Quick Actions (Emergency Links) -->
-    <nav class="flex flex-wrap gap-4" aria-label="Quick navigation">
-      <a href="/docs/policies/rules" class="px-5 py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-colors">
-        Read the Rules
-      </a>
-      <a href="/docs/user/getting-started" class="px-5 py-2.5 bg-surface-800 hover:bg-surface-700 text-white text-sm font-medium rounded-lg border border-border transition-colors">
-        Getting Started
-      </a>
-      <a href="https://goingdark.social" class="px-5 py-2.5 bg-surface-800 hover:bg-surface-700 text-white text-sm font-medium rounded-lg border border-border transition-colors">
-        Open App
-      </a>
-    </nav>
   </header>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-    <!-- 2. THE CONTENT HUB (Main Grid) -->
-    <section class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4" aria-label="Wiki sections">
-      {Object.entries(sections).map(([folder, { title, pages }]) => (
-        <article class="bg-[#151921] border border-[#292e3b] rounded-xl p-5 hover:border-indigo-500/30 transition-colors group">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors flex items-center gap-2">
-               <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-               </svg>
-               {title}
-            </h2>
-            <span class="text-xs font-mono text-slate-400 bg-[#0b0e14] px-2 py-1 rounded border border-[#292e3b]" aria-label={`${pages.length} pages`}>{pages.length}</span>
+  <!-- CATEGORY DIRECTORY - Wayfinding Pattern -->
+  <section aria-label="Documentation categories">
+    <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+      <Icon name="folder" size={24} class="text-primary" />
+      <span>Browse by Category</span>
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {sections.map(section => (
+        <article class="bg-surface border border-border rounded-[12px] p-6 hover:border-primary/50 transition-all group">
+          {/* Category Header */}
+          <div class="mb-4 pb-4 border-b border-border">
+            {section.indexPage ? (
+              <a href={`/docs/${section.folder}`} class="flex items-center justify-between group">
+                <h3 class="text-xl font-bold text-white group-hover:text-primary transition-colors flex items-center gap-2">
+                  <Icon name="folder" size={20} class="text-text-muted" />
+                  {section.title}
+                </h3>
+                <span class="text-xs font-mono text-text-subtle bg-background px-2.5 py-1 rounded-[12px] border border-border">
+                  {section.pages.length} pages
+                </span>
+              </a>
+            ) : (
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                  <Icon name="folder" size={20} class="text-text-muted" />
+                  {section.title}
+                </h3>
+                <span class="text-xs font-mono text-text-subtle bg-background px-2.5 py-1 rounded-[12px] border border-border">
+                  {section.pages.length} pages
+                </span>
+              </div>
+            )}
           </div>
 
-          <ul class="space-y-2 pl-0">
-            {pages.slice(0, 4).map(page => (
+          {/* Top Pages Preview (shows 3-4 pages) */}
+          <ul class="space-y-3">
+            {section.pages.slice(0, 4).map(page => (
               <li>
-                <a href={`/docs/${page.slug}`} class="block text-sm text-slate-300 hover:text-white truncate transition-colors">
-                  {page.data.title}
+                <a 
+                  href={`/docs/${page.slug}`} 
+                  class="flex items-start gap-2 text-sm text-text-muted hover:text-white transition-colors group/link"
+                >
+                  <span class="text-primary/60 flex-shrink-0 mt-0.5">▹</span>
+                  <span class="group-hover/link:translate-x-1 transition-transform">
+                    {page.data.title}
+                  </span>
                 </a>
               </li>
             ))}
-            {pages.length > 4 && (
+            {section.pages.length > 4 && (
               <li>
-                <a href={`/docs/${pages[0].slug.split('/')[0]}`} class="text-xs text-indigo-400 hover:text-indigo-300 font-medium mt-2 inline-block">
-                  + {pages.length - 4} more
+                <a 
+                  href={`/docs/${section.folder}`} 
+                  class="text-xs text-primary hover:text-primary-hover font-medium flex items-center gap-1"
+                >
+                  <span>View all {section.pages.length} pages</span>
+                  <Icon name="arrow-right" size={12} />
                 </a>
               </li>
             )}
           </ul>
         </article>
       ))}
-    </section>
+    </div>
+  </section>
 
-    <!-- 3. THE PULSE (Sidebar) -->
-    <aside class="space-y-6" aria-label="Sidebar">
-
-      <!-- Recently Updated -->
-      <section class="bg-[#151921] border border-[#292e3b] rounded-xl p-5">
-        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Recently Updated</h2>
-        <div class="space-y-4">
-          {recentDocs.map(doc => (
-            <a href={`/docs/${doc.slug}`} class="group block">
-              <div class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
-                {doc.data.title}
-              </div>
-              <div class="text-xs text-slate-500 mt-1">
-                {doc.slug}
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <!-- Server Stats / Info -->
-      <section class="bg-[#151921] border border-[#292e3b] rounded-xl p-5">
-        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">System Status</h2>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between items-center">
-             <span class="text-slate-400">Version</span>
-             <span class="font-mono text-white bg-[#0b0e14] px-1.5 py-0.5 rounded text-xs">v4.3.0</span>
-          </div>
-          <div class="flex justify-between items-center">
-             <span class="text-slate-400">Registrations</span>
-             <span class="text-green-400 flex items-center gap-1.5">
-               <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-               Open
-             </span>
-          </div>
-          <div class="mt-4 pt-4 border-t border-[#292e3b]">
-            <a href="https://status.goingdark.social" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors">
-              View full status page &rarr;
-            </a>
-          </div>
-        </div>
-      </section>
-
-    </aside>
-  </div>
 </WikiLayout>

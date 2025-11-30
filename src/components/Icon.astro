@@ -1,0 +1,125 @@
+---
+/**
+ * Icon Component - Unified icon system using Lucide
+ * Replaces emojis and hardcoded SVG strings
+ * 
+ * Usage: <Icon name="shield" size={20} />
+ */
+
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 20, class: className = '' } = Astro.props;
+
+// Map semantic names to Lucide icon names
+const iconMap: Record<string, string> = {
+  // Navigation
+  'home': 'Home',
+  'folder': 'Folder',
+  'file': 'FileText',
+  'search': 'Search',
+  'menu': 'Menu',
+  'close': 'X',
+  'chevron-right': 'ChevronRight',
+  'chevron-down': 'ChevronDown',
+  
+  // Actions
+  'external': 'ExternalLink',
+  'edit': 'Edit',
+  'arrow-right': 'ArrowRight',
+  
+  // Rules/Policy icons (replacing emojis)
+  'shield': 'Shield',           // Treat People Well
+  'alert': 'AlertTriangle',     // Content Warnings
+  'ban': 'Ban',                 // No Spam
+  'shield-alert': 'ShieldAlert', // No Hate
+  'sparkles': 'Sparkles',       // Keep it Clean
+  'scale': 'Scale',             // No Illegal Content
+  'search-x': 'SearchX',        // Don't Look for Loopholes
+  'zap': 'Zap',                 // Consequences
+  'user-check': 'UserCheck',    // Be Honest
+  'server': 'Server',           // Respect the Server
+  'lock': 'Lock',               // No Doxing
+  'hand': 'Hand',               // Stop Means Stop
+  'bot': 'Bot',                 // No Unapproved Bots
+  'alert-octagon': 'AlertOctagon', // No Calls for Violence
+  
+  // General
+  'book': 'BookOpen',
+  'info': 'Info',
+  'check': 'Check',
+};
+
+const lucideName = iconMap[name] || name;
+---
+
+<!-- Icon rendered as inline SVG for flexibility -->
+<svg
+  class={`inline-block ${className}`}
+  width={size}
+  height={size}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <!-- Dynamically load Lucide icon paths based on name -->
+  <!-- This is a simplified version - in production, you'd import from lucide -->
+  {lucideName === 'Home' && (
+    <>
+      <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+    </>
+  )}
+  {lucideName === 'Folder' && (
+    <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+  )}
+  {lucideName === 'Shield' && (
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+  )}
+  {lucideName === 'AlertTriangle' && (
+    <>
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </>
+  )}
+  {lucideName === 'Ban' && (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+    </>
+  )}
+  {lucideName === 'Search' && (
+    <>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </>
+  )}
+  {lucideName === 'ChevronRight' && (
+    <polyline points="9 18 15 12 9 6" />
+  )}
+  {lucideName === 'ArrowRight' && (
+    <>
+      <line x1="5" y1="12" x2="19" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </>
+  )}
+  {lucideName === 'ExternalLink' && (
+    <>
+      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </>
+  )}
+  {lucideName === 'X' && (
+    <>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </>
+  )}
+</svg>

@@ -1,0 +1,140 @@
+---
+/**
+ * BentoGrid - Modern grid layout with variable-sized boxes
+ * Creates visual hierarchy through size and positioning
+ */
+import { getCollection } from 'astro:content';
+
+// Get recent updates
+const allDocs = await getCollection('docs');
+const recentDocs = allDocs
+  .filter(d => !d.slug.includes('index'))
+  .slice(0, 3);
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 auto-rows-[200px]">
+  
+  <!-- Box 1: Welcome/What is GoingDark (Large - Spans 2 columns) -->
+  <div class="md:col-span-2 bg-gradient-to-br from-[#1e293b] to-[#0f172a] border border-[#3b4558] rounded-2xl p-8 flex flex-col justify-between hover:border-primary/50 transition-all duration-300 row-span-1">
+    <div>
+      <div class="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-bold rounded-full border border-primary/30 mb-4">
+        WELCOME
+      </div>
+      <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">
+        What is <span class="text-primary">goingdark.social</span>?
+      </h2>
+      <p class="text-slate-300 text-sm lg:text-base leading-relaxed">
+        A privacy-focused, community-driven Mastodon instance. Part of the decentralized Fediverse where you own your data.
+      </p>
+    </div>
+    <a 
+      href="/docs/overview/about"
+      class="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium text-sm transition-colors"
+    >
+      Learn more about us
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </a>
+  </div>
+
+  <!-- Box 2: Quick Actions (Tall - Right side, spans 2 rows) -->
+  <div class="bg-[#1e293b] border border-[#3b4558] rounded-2xl p-6 flex flex-col gap-4 row-span-2 hover:border-primary/50 transition-all duration-300">
+    <div class="mb-2">
+      <div class="inline-block px-3 py-1 bg-green-500/20 text-green-400 text-xs font-bold rounded-full border border-green-500/30 mb-3">
+        QUICK ACTIONS
+      </div>
+      <h3 class="text-xl font-bold text-white">Get Started</h3>
+    </div>
+    
+    <a 
+      href="https://goingdark.social"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-between p-4 bg-gradient-to-r from-primary to-[#8b5cf6] hover:from-primary-hover hover:to-[#a78bfa] rounded-xl text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 hover:transform hover:-translate-y-0.5"
+    >
+      <span>Join Instance</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </a>
+
+    <a 
+      href="/docs/user/getting-started"
+      class="flex items-center justify-between p-4 bg-[#0f172a] border border-[#3b4558] hover:border-primary rounded-xl text-white font-medium transition-all duration-300 hover:shadow-lg"
+    >
+      <span>Getting Started</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    </a>
+
+    <a 
+      href="https://status.goingdark.social"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-between p-4 bg-[#0f172a] border border-[#3b4558] hover:border-primary rounded-xl text-white font-medium transition-all duration-300 hover:shadow-lg"
+    >
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        <span>Server Status</span>
+      </div>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+      </svg>
+    </a>
+
+    <a 
+      href="/docs/user/support-us"
+      class="flex items-center justify-between p-4 bg-[#0f172a] border border-[#3b4558] hover:border-yellow-500/50 rounded-xl text-white font-medium transition-all duration-300 hover:shadow-lg"
+    >
+      <span>Support Us</span>
+      <span class="text-yellow-400">💛</span>
+    </a>
+  </div>
+
+  <!-- Box 3: Newest Updates (Medium) -->
+  <div class="md:col-span-1 bg-[#1e293b] border border-[#3b4558] rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 row-span-1">
+    <div class="mb-4">
+      <div class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/30 mb-3">
+        UPDATES
+      </div>
+      <h3 class="text-lg font-bold text-white">Recent Changes</h3>
+    </div>
+    <div class="space-y-3">
+      {recentDocs.slice(0, 2).map(doc => (
+        <a href={`/docs/${doc.slug}`} class="block group">
+          <div class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors line-clamp-1">
+            {doc.data.title}
+          </div>
+          <div class="text-xs text-slate-500 mt-0.5 font-mono truncate">
+            {doc.slug}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Box 4: Rules & Safety (Medium) -->
+  <div class="md:col-span-1 bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-500/30 rounded-2xl p-6 hover:border-red-500/50 transition-all duration-300 row-span-1">
+    <div class="mb-4">
+      <div class="inline-block px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-full border border-red-500/30 mb-3">
+        IMPORTANT
+      </div>
+      <h3 class="text-lg font-bold text-white">Rules & Safety</h3>
+    </div>
+    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+      Read our community guidelines to keep goingdark.social a welcoming space.
+    </p>
+    <a 
+      href="/docs/policies/rules"
+      class="inline-flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 font-medium rounded-lg transition-colors border border-red-500/30"
+    >
+      View Rules
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </a>
+  </div>
+
+</div>
