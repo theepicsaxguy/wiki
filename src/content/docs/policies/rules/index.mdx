@@ -13,7 +13,7 @@ import RuleGrid from '../../../../components/mdx/RuleGrid.astro';
 Click any rule card below to read the full details in an instant modal—no page loads required.
 
 <RuleGrid>
-  <RuleCard title="Treat People Well" icon="🤝" severity="high" number={1} client:load>
+  <RuleCard title="Treat People Well" iconName="shield" severity="high" number={1} client:load>
     **The Golden Rule applies.** Speak to others the way you'd like them to speak to you.
 
     Because we keep this community intentionally small, tone matters. It shapes the vibe for everyone.
@@ -25,7 +25,7 @@ Click any rule card below to read the full details in an instant modal—no page
     We aren't asking for toxic positivity—you can disagree—but we are asking for basic professional respect.
   </RuleCard>
 
-  <RuleCard title="Use Content Warnings" icon="⚠️" severity="medium" number={2} client:load>
+  <RuleCard title="Use Content Warnings" iconName="alert" severity="medium" number={2} client:load>
     **Label sensitive content appropriately.** Content Warnings (CW) help people decide what they want to see.
 
     Use CWs for:
@@ -40,7 +40,7 @@ Click any rule card below to read the full details in an instant modal—no page
     If you're not sure whether something needs a CW, it probably does. Better safe than sorry.
   </RuleCard>
 
-  <RuleCard title="No Spam" icon="🚫" severity="medium" number={3} client:load>
+  <RuleCard title="No Spam" iconName="ban" severity="medium" number={3} client:load>
     **We are here for conversation, not advertising.** Spam ruins communities.
 
     What counts as spam:
@@ -54,7 +54,7 @@ Click any rule card below to read the full details in an instant modal—no page
     Sharing interesting links or your own work occasionally is fine. Just don't be pushy about it.
   </RuleCard>
 
-  <RuleCard title="No Hate or Threats" icon="⛔" severity="high" number={4} client:load>
+  <RuleCard title="No Hate or Threats" iconName="shield-alert" severity="high" number={4} client:load>
     **Zero tolerance for bigotry or violence.** This is non-negotiable.
 
     Prohibited content includes:
@@ -70,7 +70,7 @@ Click any rule card below to read the full details in an instant modal—no page
     **Violations result in immediate suspension.**
   </RuleCard>
 
-  <RuleCard title="Keep it Clean" icon="🧹" severity="medium" number={5} client:load>
+  <RuleCard title="Keep it Clean" iconName="sparkles" severity="medium" number={5} client:load>
     **No gratuitous gore or violence.** NSFW content is allowed *only* with proper content warnings and tags.
 
     * Use content warnings and mark posts as sensitive
@@ -78,7 +78,7 @@ Click any rule card below to read the full details in an instant modal—no page
     * Adult content must be clearly labeled
   </RuleCard>
 
-  <RuleCard title="No Illegal Content" icon="⚖️" severity="high" number={6} client:load>
+  <RuleCard title="No Illegal Content" iconName="scale" severity="high" number={6} client:load>
     **If it's illegal in the EU/Sweden, it's not allowed here.** This includes:
 
     * Piracy links or copyrighted material
@@ -87,13 +87,13 @@ Click any rule card below to read the full details in an instant modal—no page
     * Illegal drugs or weapons sales
   </RuleCard>
 
-  <RuleCard title="Don't Look for Loopholes" icon="🔍" severity="medium" number={7} client:load>
+  <RuleCard title="Don't Look for Loopholes" iconName="search-x" severity="medium" number={7} client:load>
     **Trying to "game" the rules is a violation of the rules.** We moderate based on intent and impact, not technicalities.
 
     If you find yourself thinking "technically this isn't against the rules," you're probably about to break them.
   </RuleCard>
 
-  <RuleCard title="Consequences" icon="⚡" severity="low" number={8} client:load>
+  <RuleCard title="Consequences" iconName="zap" severity="low" number={8} client:load>
     **We warn, limit, or suspend based on severity.** Our moderation approach:
 
     1. **First offense (minor):** Warning with explanation
@@ -104,7 +104,7 @@ Click any rule card below to read the full details in an instant modal—no page
     We believe in second chances for honest mistakes, but not for bad faith actors.
   </RuleCard>
 
-  <RuleCard title="Be Honest About Identity" icon="🎭" severity="medium" number={9} client:load>
+  <RuleCard title="Be Honest About Identity" iconName="user-check" severity="medium" number={9} client:load>
     **Parody is fine if labeled; impersonation is not.**
 
     * Parody accounts must clearly indicate they're parody
@@ -112,7 +112,7 @@ Click any rule card below to read the full details in an instant modal—no page
     * Satire should be obvious
   </RuleCard>
 
-  <RuleCard title="Respect the Server" icon="🖥️" severity="high" number={10} client:load>
+  <RuleCard title="Respect the Server" iconName="server" severity="high" number={10} client:load>
     **Don't attack our infrastructure.**
 
     * No DDoS attacks or attempts
@@ -123,7 +123,7 @@ Click any rule card below to read the full details in an instant modal—no page
     Security researchers: please report vulnerabilities responsibly.
   </RuleCard>
 
-  <RuleCard title="No Doxing" icon="🔒" severity="high" number={11} client:load>
+  <RuleCard title="No Doxing" iconName="lock" severity="high" number={11} client:load>
     **Respect privacy.** Don't post other people's personal information.
 
     This includes:
@@ -134,7 +134,7 @@ Click any rule card below to read the full details in an instant modal—no page
     * "Public" information compiled to harass someone
   </RuleCard>
 
-  <RuleCard title="Stop Means Stop" icon="🛑" severity="high" number={12} client:load>
+  <RuleCard title="Stop Means Stop" iconName="hand" severity="high" number={12} client:load>
     **If someone blocks you or asks you to leave them alone, do it.**
 
     * Don't create alt accounts to evade blocks
@@ -145,7 +145,7 @@ Click any rule card below to read the full details in an instant modal—no page
     Take the hint and move on.
   </RuleCard>
 
-  <RuleCard title="No Unapproved Bots" icon="🤖" severity="medium" number={13} client:load>
+  <RuleCard title="No Unapproved Bots" iconName="bot" severity="medium" number={13} client:load>
     **All bots must be approved before joining.**
 
     Read our [Bot Policy](/docs/policies/bots-and-automation/) for the application process.
@@ -155,7 +155,7 @@ Click any rule card below to read the full details in an instant modal—no page
     * Bots must not spam or annoy users
   </RuleCard>
 
-  <RuleCard title="No Calls for Violence" icon="💥" severity="high" number={14} client:load>
+  <RuleCard title="No Calls for Violence" iconName="alert-octagon" severity="high" number={14} client:load>
     **Advocating for harm gets you banned immediately.**
 
     * No inciting violence against people or groups

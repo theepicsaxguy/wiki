@@ -1,24 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  /* Mastodon Dark Palette */
-  --color-background: #191b22;
-  --color-surface-900: #191b22;
-  --color-surface-800: #282c37;
-  --color-surface-700: #393f4f;
-  --color-surface-600: #393f4f;
+  /* Unified Design System - Single Source of Truth */
+  
+  /* Core Palette - 4 Shades Only */
+  --color-background: #191b22;        /* Page background */
+  --color-surface: #282c37;          /* Cards, elevated surfaces */
+  --color-border: #393f4f;           /* Borders, dividers */
+  --color-highlight: #6364ff;        /* Primary actions, focus */
+  
+  /* Surface variants (derived from core) */
+  --color-surface-900: #191b22;      /* = background */
+  --color-surface-800: #282c37;      /* = surface */
+  --color-surface-700: #393f4f;      /* = border */
+  
+  /* Primary palette */
   --color-primary: #6364ff;
   --color-primary-hover: #8c8dff;
+  --color-primary-subtle: rgba(99, 100, 255, 0.1);
+  --color-primary-border: rgba(99, 100, 255, 0.2);
+  
+  /* Text hierarchy */
   --color-text-main: #d9e1e8;
   --color-text-muted: #9baec8;
-  --color-border: #393f4f;
-
+  --color-text-subtle: #6c7891;
+  
+  /* Typography */
   --font-sans: Roboto, system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   
-  /* Gradient colors for 2025 aesthetic */
-  --color-gradient-start: #6366f1;
-  --color-gradient-end: #8b5cf6;
+  /* Design Tokens */
+  --radius-base: 12px;               /* Standard border radius */
+  --radius-lg: 16px;                 /* Large border radius */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --transition-base: 200ms ease;
 }
 
 /* Base Styles */
@@ -57,27 +72,31 @@ body {
   background: var(--color-surface-600);
 }
 
-/* Glassmorphism Utilities */
-.glass-effect {
-  background: rgba(25, 27, 34, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* Design System Utilities */
+
+/* Consistent Surface Styles */
+.surface {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
 }
 
-.glass-border {
-  border: 1px solid rgba(99, 100, 255, 0.1);
+.surface-hover {
+  transition: border-color var(--transition-base);
 }
 
-/* Gradient Button Styles */
-.btn-gradient {
-  background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
-  transition: all 0.3s ease;
+.surface-hover:hover {
+  border-color: var(--color-primary-border);
 }
 
-.btn-gradient:hover {
-  background: linear-gradient(135deg, var(--color-primary-hover), #a78bfa);
-  transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+/* Depth Strategy: Flat + 1px Border (No shadows/glassmorphism for cards) */
+.depth-1 {
+  border: 1px solid var(--color-border);
+}
+
+.depth-focus {
+  border: 1px solid var(--color-primary-border);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
 }
 
 /* Wiki Content Styles */
