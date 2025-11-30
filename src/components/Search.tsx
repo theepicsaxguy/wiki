@@ -12,6 +12,7 @@ export default function Search({ docs }: SearchProps) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState<typeof docs>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export default function Search({ docs }: SearchProps) {
 
     setResults(filtered);
     setIsOpen(true);
+    setSelectedIndex(0); // Reset selection when results change
   }, [query, docs]);
 
   // Close on outside click
@@ -60,18 +62,21 @@ export default function Search({ docs }: SearchProps) {
 
   return (
     <div class="relative" ref={searchRef}>
-      <label for="wiki-search-input" class="sr-only">Search wiki documentation</label>
+      <label htmlFor="wiki-search-input" class="sr-only">Search wiki documentation</label>
       <div class="relative group">
         <input
           id="wiki-search-input"
           type="text"
+          role="combobox"
           value={query}
           onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
           placeholder="Search wiki... (Ctrl+K)"
-          class="w-full px-4 py-3 pl-11 pr-20 bg-[#1e293b] border-2 border-[#3b4558] rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all hover:border-primary/30"
+          class="w-full px-4 py-3 pl-11 pr-20 bg-surface-hover border-2 border-border rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all hover:border-primary/30"
           aria-label="Search wiki documentation"
+          aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls="search-results"
+          aria-haspopup="listbox"
         />
         <svg
           class="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"
@@ -97,15 +102,16 @@ export default function Search({ docs }: SearchProps) {
         <div
           id="search-results"
           role="listbox"
-          class="absolute z-50 w-full mt-2 bg-[#1e293b]/95 backdrop-blur-lg border border-[#3b4558] rounded-xl shadow-2xl overflow-hidden"
+          class="absolute z-50 w-full mt-2 bg-surface-hover/95 backdrop-blur-lg border border-border rounded-xl shadow-2xl overflow-hidden"
         >
           <div class="p-2">
             {results.map((doc, index) => (
               <a
                 key={doc.slug}
                 href={`/docs/${doc.slug}`}
-                class="group flex items-start gap-3 px-3 py-3 hover:bg-primary/10 transition-colors rounded-lg border-b border-[#3b4558]/50 last:border-b-0"
+                class="group flex items-start gap-3 px-3 py-3 hover:bg-primary/10 transition-colors rounded-lg border-b border-border/50 last:border-b-0"
                 role="option"
+                aria-selected={index === selectedIndex}
                 onClick={() => setIsOpen(false)}
               >
                 <div class="flex-shrink-0 w-6 h-6 rounded-md bg-primary/20 flex items-center justify-center text-primary text-xs font-bold mt-0.5">
@@ -129,7 +135,7 @@ export default function Search({ docs }: SearchProps) {
       {/* No results */}
       {isOpen && query.length >= 2 && results.length === 0 && (
         <div
-          class="absolute z-50 w-full mt-2 bg-[#1e293b]/95 backdrop-blur-lg border border-[#3b4558] rounded-xl shadow-2xl p-6"
+          class="absolute z-50 w-full mt-2 bg-surface-hover/95 backdrop-blur-lg border border-border rounded-xl shadow-2xl p-6"
         >
           <div class="text-center">
             <svg class="w-12 h-12 text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

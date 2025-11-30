@@ -42,7 +42,7 @@ export function buildNavigationTree(docs: any[]): NavItem[] {
   const rootNodes: NavItem[] = [];
   const nodesBySlug = new Map(Array.from(tree.entries()));
 
-  nodesBySlug.forEach((node, slug) => {
+  nodesBySlug.forEach((node, _slug) => {
     const parts = node.path;
 
     if (parts.length === 1) {

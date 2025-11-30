@@ -50,7 +50,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
       {/* Card - Using Design System */}
       <button
         onClick={() => setIsOpen(true)}
-        class={`group relative bg-surface border ${severityColors[severity]} rounded-[12px] p-6 transition-all duration-200 hover:border-opacity-100 text-left w-full`}
+        class={`group relative bg-surface border ${severityColors[severity]} rounded-xl p-6 transition-all duration-200 hover:border-opacity-100 text-left w-full`}
         aria-label={`Read rule: ${title}`}
       >
         {/* Rule Number Badge */}
@@ -80,16 +80,18 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
       {isOpen && (
         <div
           class="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          onClick={() => setIsOpen(false)}
           role="presentation"
         >
           {/* Backdrop - Simpler without glassmorphism */}
-          <div class="absolute inset-0 bg-black/80" />
+          <button
+            class="absolute inset-0 bg-black/80 cursor-default"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close modal"
+          />
 
           {/* Modal Content - Design System colors */}
           <div
-            class="relative bg-surface border border-border rounded-[16px] max-w-2xl w-full max-h-[85vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
+            class="relative bg-surface border border-border rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
@@ -111,7 +113,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                class="p-2 hover:bg-background rounded-[12px] transition-colors"
+                class="p-2 hover:bg-background rounded-xl transition-colors"
                 aria-label="Close modal"
               >
                 <X class="w-5 h-5 text-text-muted" />
@@ -131,7 +133,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
             <div class="sticky bottom-0 bg-surface border-t border-border px-6 py-4">
               <button
                 onClick={() => setIsOpen(false)}
-                class="w-full px-4 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-[12px] transition-colors"
+                class="w-full px-4 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-xl transition-colors"
               >
                 Got it
               </button>
