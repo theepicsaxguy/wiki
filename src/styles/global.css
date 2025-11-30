@@ -33,9 +33,9 @@
   --color-secondary: #8b5cf6;         /* Purple for gradients */
   --color-secondary-hover: #a78bfa;   /* Lighter purple */
   
-  /* Text hierarchy */
-  --color-text-main: #d9e1e8;
-  --color-text-subtle: #6c7891;
+  /* Text hierarchy (alias for consistency) */
+  --color-text-main: #d9e1e8;        /* Same as text-primary */
+  --color-text-subtle: #6c7891;      /* Tertiary text */
   
   /* Typography */
   --font-sans: Roboto, system-ui, -apple-system, sans-serif;
