@@ -396,6 +396,72 @@ button:focus-visible {
   border-radius: 0.375rem;
 }
 
+/* Standardized Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 100, 255, 0.3);
+}
+
+.btn-secondary {
+  background: var(--color-surface-800);
+  color: white;
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-surface-700);
+  border-color: var(--color-primary-border);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface-800);
+  color: white;
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
 /* Utility Classes - Removed gradient and glass effects for Mastodon aesthetic */
 
 /* Grid Layouts */
