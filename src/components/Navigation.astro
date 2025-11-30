@@ -1,4 +1,7 @@
 ---
+import { getCollection } from 'astro:content';
+import Search from './Search.tsx';
+
 const currentPath = Astro.url.pathname;
 
 const navItems = [
@@ -7,6 +10,14 @@ const navItems = [
   { name: 'Rules', path: '/docs/policies/rules' },
   { name: 'Privacy', path: '/docs/legal/privacy' },
 ];
+
+// Get all docs for search
+const allDocs = await getCollection('docs');
+const docsForSearch = allDocs.map(doc => ({
+  slug: doc.slug,
+  title: doc.data.title,
+  description: doc.data.description,
+}));
 ---
 
 <nav class="sticky top-0 z-50 bg-surface-900 border-b border-border">
@@ -26,31 +37,19 @@ const navItems = [
       </div>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-2">
-        {navItems.map(item => {
-          const isActive = currentPath === item.path ||
-                          (item.path !== '/' && currentPath.startsWith(item.path));
-          return (
-            <a
-              href={item.path}
-              class={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary text-white'
-                  : 'text-text-muted hover:text-white hover:bg-surface-800'
-              }`}
-            >
-              {item.name}
-            </a>
-          );
-        })}
+      <div class="hidden md:flex items-center gap-3 flex-1 justify-end max-w-2xl">
+        <!-- Search Bar -->
+        <div class="flex-1 max-w-md">
+          <Search docs={docsForSearch} client:idle />
+        </div>
 
-        <div class="w-px h-6 bg-border mx-2"></div>
+        <div class="w-px h-6 bg-border"></div>
 
         <a
           href="https://goingdark.social"
           target="_blank"
           rel="noopener noreferrer"
-          class="px-4 py-2 rounded-full text-sm font-medium bg-surface-800 hover:bg-surface-700 border border-border text-white transition-colors flex items-center gap-2"
+          class="btn btn-secondary flex-shrink-0"
         >
           Visit Instance
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -62,7 +61,7 @@ const navItems = [
       <!-- Mobile Menu Button -->
       <button
         id="mobile-menu-button"
-        class="md:hidden p-2 rounded-lg text-text-muted hover:text-white hover:bg-surface-800 transition-colors"
+        class="md:hidden btn btn-ghost btn-icon"
         aria-label="Open navigation menu"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -83,10 +83,10 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
           role="presentation"
         >
           {/* Backdrop - Simpler without glassmorphism */}
-          <button
+          <div
             class="absolute inset-0 bg-black/80 cursor-default"
             onClick={() => setIsOpen(false)}
-            aria-label="Close modal"
+            aria-hidden="true"
           />
 
           {/* Modal Content - Design System colors */}
@@ -113,10 +113,10 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                class="p-2 hover:bg-background rounded-xl transition-colors"
+                class="btn btn-ghost btn-icon"
                 aria-label="Close modal"
               >
-                <X class="w-5 h-5 text-text-muted" />
+                <X class="w-5 h-5" />
               </button>
             </div>
 
@@ -133,7 +133,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
             <div class="sticky bottom-0 bg-surface border-t border-border px-6 py-4">
               <button
                 onClick={() => setIsOpen(false)}
-                class="w-full px-4 py-2 bg-primary hover:bg-primary-hover text-white font-medium rounded-xl transition-colors"
+                class="btn btn-primary w-full"
               >
                 Got it
               </button>
