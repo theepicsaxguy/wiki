@@ -177,6 +177,7 @@ body {
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--color-surface-700);
 }
 
 .card-interactive::before {
@@ -199,6 +200,8 @@ body {
 .card-interactive:hover {
   background: var(--color-surface-750);
   transform: translateY(-2px);
+  border-color: var(--color-primary-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px var(--color-primary-glow);
 }
 
 /* Minimal Border Utility (Use sparingly - only for inputs) */

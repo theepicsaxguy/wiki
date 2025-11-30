@@ -1,19 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import PagefindSearch from './PagefindSearch.astro';
-import Icon from './Icon.astro';
-import { buildNavigationTree, isActivePage, isParentOfActivePage } from '../utils/navigation';
+import { SidebarTree } from './SidebarTree';
+import { buildNavigationTree } from '../utils/navigation';
 
 // Get all docs pages
 const allDocs = await getCollection('docs');
-
 const navigation = buildNavigationTree(allDocs);
 
 // Get current page
 const currentPath = Astro.url.pathname.replace('/docs/', '').replace(/\/$/, '');
-
-const isActive = (slug: string) => isActivePage(currentPath, slug);
-const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
 const isHome = Astro.url.pathname === '/';
 ---
 
@@ -22,123 +18,10 @@ const isHome = Astro.url.pathname === '/';
   <PagefindSearch />
 </div>
 
-<!-- Wiki Home Link -->
-<div class="mb-8">
-  <a
-    href="/"
-    class:list={[
-      "group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all",
-      isHome
-        ? "bg-primary text-white shadow-lg shadow-primary/20"
-        : "text-text-muted hover:text-white hover:bg-surface-800"
-    ]}
-  >
-    <Icon name="home" size={18} />
-    <span>Wiki Home</span>
-  </a>
-</div>
-
-<div class="mb-4 flex items-center gap-2 px-3">
-  <Icon name="book-open" size={16} class="text-primary" />
-  <span class="text-xs font-bold text-text-subtle uppercase tracking-wider">Documentation</span>
-</div>
-
-<nav aria-label="Documentation navigation">
-  <ul class="space-y-2">
-    {navigation.map(node => {
-      const active = isActive(node.slug);
-      const isParentNode = isParent(node.slug);
-      const hasChildren = node.children.length > 0;
-
-      return (
-        <li>
-          <a
-            href={`/docs/${node.slug}`}
-            class:list={[
-              "group relative flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all",
-              active
-                ? "bg-primary text-white shadow-lg shadow-primary/20"
-                : isParentNode
-                ? "text-white bg-surface-800"
-                : "text-text-muted hover:text-white hover:bg-surface-800"
-            ]}
-          >
-            {hasChildren && (
-              <div class:list={[
-                "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all",
-                active 
-                  ? "bg-white/20" 
-                  : isParentNode
-                  ? "bg-primary/10"
-                  : "bg-surface-750 group-hover:bg-primary/10"
-              ]}>
-                <Icon name="folder" size={16} class={active || isParentNode ? "text-white" : "text-text-muted group-hover:text-primary"} />
-              </div>
-            )}
-            <span class="flex-1">{node.title}</span>
-          </a>
-
-          {hasChildren && (
-            <ul class="mt-2 ml-11 space-y-1">
-              {node.children.filter(child => !child.slug.endsWith('/index')).map(child => {
-                const childActive = isActive(child.slug);
-                const childIsParent = isParent(child.slug);
-                const childHasChildren = child.children.length > 0;
-
-                return (
-                  <li>
-                    <a
-                      href={`/docs/${child.slug}`}
-                      class:list={[
-                        "group flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all",
-                        childActive
-                          ? "text-white font-semibold bg-primary/15 border-l-2 border-primary"
-                          : childIsParent
-                          ? "text-white font-medium bg-surface-850"
-                          : "text-text-muted hover:text-white hover:bg-surface-850"
-                      ]}
-                    >
-                      <span class:list={[
-                        "text-lg leading-none transition-colors",
-                        childActive ? "text-primary" : "text-primary/40 group-hover:text-primary/60"
-                      ]}>▹</span>
-                      <span class="flex-1">{child.title}</span>
-                    </a>
-
-                    {childHasChildren && (
-                      <ul class="mt-1 ml-4 space-y-1">
-                        {child.children.filter(grandchild => !grandchild.slug.endsWith('/index')).map(grandchild => {
-                          const grandchildActive = isActive(grandchild.slug);
-
-                          return (
-                            <li>
-                              <a
-                                href={`/docs/${grandchild.slug}`}
-                                class:list={[
-                                  "group flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-all",
-                                  grandchildActive
-                                    ? "text-white font-semibold bg-primary/15 border-l-2 border-primary"
-                                    : "text-text-muted hover:text-white hover:bg-surface-850"
-                                ]}
-                              >
-                                <span class:list={[
-                                  "text-sm leading-none transition-colors",
-                                  grandchildActive ? "text-primary" : "text-primary/30 group-hover:text-primary/50"
-                                ]}>◦</span>
-                                <span class="flex-1">{grandchild.title}</span>
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </li>
-      );
-    })}
-  </ul>
-</nav>
+<!-- React Interactive Sidebar Tree with collapsible folders -->
+<SidebarTree 
+  client:load 
+  navigation={navigation} 
+  currentPath={currentPath}
+  isHome={isHome}
+/>
