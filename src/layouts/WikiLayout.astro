@@ -155,7 +155,7 @@ if (currentSlug) {
     <div class="flex-1 w-full">
       <div class:list={[
         "mx-auto flex items-start relative",
-        isDocsPage ? "max-w-[90rem]" : "max-w-7xl"
+        isDocsPage ? "max-w-360" : "max-w-7xl" 
       ]}>
         <!-- Docs Sidebar (Desktop Only) - Fixed width, sticky -->
         {isDocsPage && (
@@ -184,8 +184,8 @@ if (currentSlug) {
                   const isLast = i === breadcrumbPath.length - 1;
                   return (
                     <>
-                      <li>
-                        <Icon name="chevron-right" size={14} class="text-border" />
+                      <li class="flex items-center">
+                        <Icon name="chevron-right" size={14} class="text-surface-600" />
                       </li>
                       <li>
                         {isLast ? (
@@ -368,17 +368,22 @@ if (currentSlug) {
 
       if (mobileOverlay) {
         const closeSidebar = () => {
+          console.log('Closing sidebar');
           mobileOverlay.classList.add('hidden');
           document.body.style.overflow = '';
         };
 
         const openSidebar = () => {
+          console.log('Opening sidebar');
           mobileOverlay.classList.remove('hidden');
           document.body.style.overflow = 'hidden';
         };
 
         // Listen for custom event from Navigation component
-        window.addEventListener('open-sidebar', openSidebar);
+        window.addEventListener('open-sidebar', (e) => {
+          console.log('open-sidebar event received', e);
+          openSidebar();
+        });
 
         mobileClose?.addEventListener('click', closeSidebar);
         mobileOverlay.addEventListener('click', (e) => {

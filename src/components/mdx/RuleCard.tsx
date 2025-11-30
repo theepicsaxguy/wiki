@@ -32,17 +32,11 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
 
   const IconComponent = iconComponents[iconName] || Shield;
 
-  // Design System: Using CSS variables
-  const severityColors = {
-    high: 'border-red-500/20 hover:border-red-500/40',
-    medium: 'border-yellow-500/20 hover:border-yellow-500/40',
-    low: 'border-blue-500/20 hover:border-blue-500/40',
-  };
-
+  // Design System: Using semantic tokens mapped to Electric Violet accent system
   const severityBadge = {
     high: 'bg-red-500/10 text-red-400 border-red-500/20',
-    medium: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
-    low: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    medium: 'bg-primary/10 text-primary border-primary/20',
+    low: 'bg-primary/10 text-primary border-primary/20',
   };
 
   return (

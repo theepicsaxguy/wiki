@@ -67,8 +67,12 @@ const docsForSearch = allDocs.map(doc => ({
 <script>
   const mobileMenuButton = document.getElementById('mobile-menu-button');
 
-  mobileMenuButton?.addEventListener('click', () => {
-    // Dispatch custom event to open sidebar drawer
-    window.dispatchEvent(new CustomEvent('open-sidebar'));
-  });
+  if (mobileMenuButton) {
+    mobileMenuButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Mobile menu button clicked');
+      // Dispatch custom event to open sidebar drawer
+      window.dispatchEvent(new CustomEvent('open-sidebar'));
+    });
+  }
 </script>
