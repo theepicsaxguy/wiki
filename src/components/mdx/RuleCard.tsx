@@ -47,32 +47,34 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
 
   return (
     <>
-      {/* Card - Using Design System */}
+      {/* Card - Modern elevation-based design */}
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className={`group relative bg-surface border ${severityColors[severity]} rounded-xl p-6 transition-all duration-200 hover:border-opacity-100 text-left w-full`}
+        className="card-interactive group text-left w-full"
         aria-label={`Read rule: ${title}`}
       >
         {/* Rule Number Badge */}
         {number && (
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center border border-primary/20">
+          <div className="absolute top-5 right-5 w-10 h-10 rounded-xl bg-primary/20 text-primary font-bold text-base flex items-center justify-center">
             {number}
           </div>
         )}
 
-        {/* Icon - Lucide SVG instead of emoji */}
-        <div className="mb-4 text-text-muted">
-          <IconComponent size={32} />
+        {/* Icon in elevated container */}
+        <div className="mb-5">
+          <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all">
+            <IconComponent size={28} />
+          </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-white mb-3 pr-8 group-hover:text-primary transition-colors">
+        <h3 className="text-xl font-bold text-white mb-4 pr-10 group-hover:text-primary transition-colors">
           {title}
         </h3>
 
-        {/* Severity Badge - Removed redundant "Click to read more" */}
-        <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full border ${severityBadge[severity]}`}>
+        {/* Severity Badge */}
+        <span className={`inline-block text-xs font-bold px-3 py-1.5 rounded-full ${severityBadge[severity]}`}>
           {severity.toUpperCase()}
         </span>
       </button>
@@ -90,15 +92,15 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
             aria-hidden="true"
           />
 
-          {/* Modal Content - Design System colors */}
+          {/* Modal Content - Modern elevated surface */}
           <div
-            className="relative bg-surface border border-border rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
+            className="relative bg-surface-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-xl"
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-surface border-b border-border px-6 py-4 flex items-start justify-between">
+            <div className="sticky top-0 z-10 bg-surface-750 border-b border-surface-700 px-6 py-5 flex items-start justify-between">
               <div className="flex items-start gap-4 flex-1">
                 <div className="text-text-muted">
                   <IconComponent size={28} />
@@ -132,7 +134,7 @@ export default function RuleCard({ title, iconName = 'shield', severity = 'mediu
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 bg-surface border-t border-border px-6 py-4">
+            <div className="sticky bottom-0 bg-surface-750 border-t border-surface-700 px-6 py-5">
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}

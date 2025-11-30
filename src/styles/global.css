@@ -1,52 +1,92 @@
 @import "tailwindcss";
 
 @theme {
-  /* Unified Design System - Single Source of Truth */
+  /* Modern Dark Design System - 2025 Edition */
+  /* Philosophy: Elevation over Strokes, Subtle Blooms, Typographic Confidence */
   
-  /* Semantic Color Naming (Master Plan) */
-  --color-bg-main: #191b22;          /* Main page background */
-  --color-surface-card: #282c37;     /* Cards, elevated surfaces */
-  --color-surface-hover: #1e293b;    /* Hover state for cards */
-  --color-border-subtle: #393f4f;    /* Borders, dividers */
-  --color-text-primary: #d9e1e8;     /* Main text */
-  --color-text-muted: #9baec8;       /* Secondary text */
-  --color-accent: #6364ff;           /* Primary actions, focus, links */
+  /* Surface Elevation Hierarchy (Level-based, no borders needed) */
+  --color-surface-950: #0f1115;      /* Level 0 - Deepest background */
+  --color-surface-900: #16181d;      /* Level 1 - Page background */
+  --color-surface-850: #1c1f26;      /* Level 1.5 - Sidebar */
+  --color-surface-800: #23262f;      /* Level 2 - Cards, elevated surfaces */
+  --color-surface-750: #2a2e38;      /* Level 2.5 - Card hover */
+  --color-surface-700: #33374a;      /* Level 3 - Inputs, borders (minimal use) */
+  --color-surface-600: #4a4f63;      /* Level 4 - Disabled states */
   
-  /* Legacy aliases (for backwards compatibility during migration) */
-  --color-background: #191b22;
-  --color-surface: #282c37;
-  --color-border: #393f4f;
-  --color-highlight: #6364ff;
+  /* Legacy aliases (backward compatibility - map to new elevation) */
+  --color-bg-main: #16181d;
+  --color-background: #16181d;
+  --color-surface: #23262f;
+  --color-surface-card: #23262f;
+  --color-surface-hover: #2a2e38;
+  --color-border: #33374a;
+  --color-border-subtle: #33374a;
   
-  /* Surface variants */
-  --color-surface-900: #191b22;      /* Darkest - page background */
-  --color-surface-800: #282c37;      /* Cards, panels */
-  --color-surface-700: #393f4f;      /* Elevated elements */
+  /* Primary Accent - Electric Violet (High contrast for dark mode) */
+  --color-primary: #7c7dff;           /* Primary actions, links */
+  --color-primary-hover: #9c9dff;     /* Hover state */
+  --color-primary-active: #5c5dff;    /* Active/pressed state */
+  --color-primary-subtle: rgba(124, 125, 255, 0.08);  /* Subtle backgrounds */
+  --color-primary-border: rgba(124, 125, 255, 0.25);  /* Hairline borders */
+  --color-primary-glow: rgba(124, 125, 255, 0.15);    /* Bloom/glow effect */
   
-  /* Primary/Accent palette */
-  --color-primary: #6364ff;
-  --color-primary-hover: #8c8dff;
-  --color-primary-subtle: rgba(99, 100, 255, 0.1);
-  --color-primary-border: rgba(99, 100, 255, 0.2);
+  /* Legacy accent aliases */
+  --color-accent: #7c7dff;
+  --color-highlight: #7c7dff;
   
-  /* Secondary/Gradient palette (for CTAs) */
-  --color-secondary: #8b5cf6;         /* Purple for gradients */
-  --color-secondary-hover: #a78bfa;   /* Lighter purple */
+  /* Secondary/Success palette (for CTAs, success states) */
+  --color-secondary: #8b5cf6;
+  --color-secondary-hover: #a78bfa;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
   
-  /* Text hierarchy (alias for consistency) */
-  --color-text-main: #d9e1e8;        /* Same as text-primary */
-  --color-text-subtle: #6c7891;      /* Tertiary text */
+  /* Text Hierarchy (Improved contrast ratios) */
+  --color-text-white: #ffffff;        /* Pure white - Headings only */
+  --color-text-primary: #e5e7eb;      /* Primary text - Body */
+  --color-text-main: #e5e7eb;         /* Alias for primary */
+  --color-text-muted: #9ca3af;        /* Secondary text - Descriptions */
+  --color-text-subtle: #6b7280;       /* Tertiary text - Captions, labels */
+  --color-text-disabled: #4b5563;     /* Disabled state */
   
-  /* Typography */
-  --font-sans: Roboto, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* Typography Scale (Modern, generous sizing) */
+  --font-sans: Inter, Roboto, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   
-  /* Design Tokens */
-  --radius-card: 0.75rem;            /* 12px - Standard card radius (matches master plan) */
-  --radius-base: 12px;               /* Standard border radius */
-  --radius-lg: 16px;                 /* Large border radius */
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --transition-base: 200ms ease;
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  
+  /* Border Radius (Larger, friendlier) */
+  --radius-sm: 0.5rem;          /* 8px - Small elements */
+  --radius-base: 0.75rem;       /* 12px - Standard */
+  --radius-lg: 1rem;            /* 16px - Cards */
+  --radius-xl: 1.25rem;         /* 20px - Large cards */
+  --radius-2xl: 1.5rem;         /* 24px - Hero sections */
+  --radius-full: 9999px;        /* Pills, badges */
+  
+  /* Legacy radius aliases */
+  --radius-card: 1rem;
+  
+  /* Shadows (Minimal, realistic) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+  
+  /* Transitions (Smooth, professional) */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Bloom/Glow effects (Subtle spotlight) */
+  --glow-primary: radial-gradient(circle at top left, var(--color-primary-glow) 0%, transparent 50%);
+  --glow-hover: radial-gradient(circle at center, var(--color-primary-glow) 0%, transparent 70%);
 }
 
 /* Base Styles */
@@ -55,12 +95,42 @@
 }
 
 body {
-  background: #191b22;
-  color: var(--color-text-main);
+  background: var(--color-surface-900);
+  color: var(--color-text-primary);
   font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Tailwind Custom Utilities - Design System Integration */
+.bg-surface-950 { background-color: var(--color-surface-950) !important; }
+.bg-surface-900 { background-color: var(--color-surface-900) !important; }
+.bg-surface-850 { background-color: var(--color-surface-850) !important; }
+.bg-surface-800 { background-color: var(--color-surface-800) !important; }
+.bg-surface-750 { background-color: var(--color-surface-750) !important; }
+.bg-surface-700 { background-color: var(--color-surface-700) !important; }
+.bg-surface { background-color: var(--color-surface) !important; }
+
+.text-white { color: var(--color-text-white) !important; }
+.text-text-white { color: var(--color-text-white) !important; }
+.text-text-primary { color: var(--color-text-primary) !important; }
+.text-text-main { color: var(--color-text-main) !important; }
+.text-text-muted { color: var(--color-text-muted) !important; }
+.text-text-subtle { color: var(--color-text-subtle) !important; }
+
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-primary\/10 { background-color: var(--color-primary-subtle) !important; }
+.bg-primary\/15 { background-color: rgba(124, 125, 255, 0.15) !important; }
+.bg-primary\/20 { background-color: rgba(124, 125, 255, 0.2) !important; }
+.text-primary { color: var(--color-primary) !important; }
+.text-primary-hover { color: var(--color-primary-hover) !important; }
+
+.border-border { border-color: var(--color-surface-700) !important; }
+.border-surface-700 { border-color: var(--color-surface-700) !important; }
+.border-primary { border-color: var(--color-primary) !important; }
+.border-primary\/50 { border-color: var(--color-primary-border) !important; }
 
 ::selection {
   background-color: rgba(99, 102, 241, 0.3);
@@ -85,31 +155,61 @@ body {
   background: var(--color-surface-600);
 }
 
-/* Design System Utilities */
+/* Design System Utilities - Modern Elevation-Based */
 
-/* Consistent Surface Styles */
-.surface {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
+/* Surface Elevation (NO BORDERS - Use background contrast) */
+.surface-elevated {
+  background: var(--color-surface-800);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
 }
 
-.surface-hover {
-  transition: border-color var(--transition-base);
+.surface-elevated:hover {
+  background: var(--color-surface-750);
+  transform: translateY(-1px);
 }
 
-.surface-hover:hover {
-  border-color: var(--color-primary-border);
+/* Interactive Card with Subtle Glow */
+.card-interactive {
+  background: var(--color-surface-800);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Depth Strategy: Flat + 1px Border (No shadows/glassmorphism for cards) */
-.depth-1 {
-  border: 1px solid var(--color-border);
+.card-interactive::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--glow-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
 }
 
-.depth-focus {
-  border: 1px solid var(--color-primary-border);
-  box-shadow: 0 0 0 3px var(--color-primary-subtle);
+.card-interactive:hover::before {
+  opacity: 1;
+}
+
+.card-interactive:hover {
+  background: var(--color-surface-750);
+  transform: translateY(-2px);
+}
+
+/* Minimal Border Utility (Use sparingly - only for inputs) */
+.border-hairline {
+  border: 1px solid var(--color-surface-700);
+}
+
+/* Focus State (Accessibility) */
+.focus-ring {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 /* Wiki Content Styles */
@@ -120,57 +220,59 @@ body {
 }
 
 .wiki-content h1 {
-  font-size: 1.875rem;
+  font-size: var(--font-size-4xl);
   font-weight: 700;
-  color: white;
-  letter-spacing: -0.01em;
-  margin-bottom: 1rem;
-  line-height: 1.2;
+  color: var(--color-text-white);
+  letter-spacing: -0.025em;
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
 }
 
 .wiki-content h2 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: 600;
-  color: white;
-  letter-spacing: -0.01em;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
-  line-height: 1.3;
+  color: var(--color-text-white);
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-surface-700);
+  line-height: 1.2;
 }
 
 .wiki-content h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  color: white;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  color: var(--color-text-white);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
   line-height: 1.3;
 }
 
 .wiki-content h4 {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
-  color: white;
-  margin-top: 1.25rem;
+  color: var(--color-text-white);
+  margin-top: 1.5rem;
   margin-bottom: 0.5rem;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .wiki-content p {
-  margin-bottom: 1rem;
-  color: var(--color-text-main);
+  margin-bottom: 1.25rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
 }
 
 .wiki-content strong {
-  color: white;
+  color: var(--color-text-white);
   font-weight: 600;
 }
 
 .wiki-content em {
   font-style: italic;
-  color: var(--color-text-main);
+  color: var(--color-text-primary);
 }
 
 .wiki-content a {
@@ -396,70 +498,87 @@ button:focus-visible {
   border-radius: 0.375rem;
 }
 
-/* Standardized Button Styles */
+/* Modern Button System - No borders, elevation-based */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
   cursor: pointer;
   border: none;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary {
   background: var(--color-primary);
   color: white;
-  border: 1px solid transparent;
+  box-shadow: 0 0 20px var(--color-primary-glow);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
 .btn-primary:hover {
   background: var(--color-primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--color-primary-subtle);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--color-primary-glow);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
   background: var(--color-surface-800);
-  color: white;
-  border: 1px solid var(--color-border);
+  color: var(--color-text-white);
 }
 
 .btn-secondary:hover {
-  background: var(--color-surface-700);
-  border-color: var(--color-primary-border);
+  background: var(--color-surface-750);
+  transform: translateY(-1px);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--color-text-muted);
-  border: 1px solid transparent;
 }
 
 .btn-ghost:hover {
   background: var(--color-surface-800);
-  color: white;
+  color: var(--color-text-white);
 }
 
 .btn-icon {
-  padding: 0.5rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  padding: 0.625rem;
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
 .btn-sm {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.8125rem;
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-xs);
 }
 
 .btn-lg {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.875rem 1.75rem;
+  font-size: var(--font-size-base);
 }
 
 /* Utility Classes - Removed gradient and glass effects for Mastodon aesthetic */

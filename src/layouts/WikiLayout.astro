@@ -73,7 +73,7 @@ if (currentSlug) {
     <div class="flex-1 flex max-w-7xl mx-auto w-full">
       <!-- Docs Sidebar (Desktop Only) -->
       {isDocsPage && (
-        <div class="hidden lg:block w-64 flex-shrink-0 border-r border-border px-4 py-8">
+        <div class="hidden lg:block w-72 flex-shrink-0 bg-surface-850 px-6 py-8">
           <Sidebar />
         </div>
       )}
@@ -161,7 +161,7 @@ if (currentSlug) {
 
       <!-- Main Content -->
       <main class="flex-1 w-full min-w-0 px-4 sm:px-6 lg:px-8 py-8">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-5xl mx-auto">
           <!-- Breadcrumbs (only on docs pages) - Now showing actual titles -->
           {Astro.url.pathname !== '/' && breadcrumbPath.length > 0 && (
             <nav class="mb-6" aria-label="Breadcrumb">
@@ -196,94 +196,90 @@ if (currentSlug) {
           )}
 
           <!-- Article Content Card -->
-          <article class="wiki-content bg-surface-900 border border-border rounded-lg p-6 sm:p-8">
+          <article class="wiki-content">
             <slot />
           </article>
 
-          <!-- Next/Previous Navigation -->
+          <!-- Next/Previous Navigation (Fixed Layout) -->
           {(prevPage || nextPage) && (
-            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="mt-8 grid grid-cols-2 gap-4">
               {prevPage ? (
                 <a
                   href={`/docs/${prevPage.slug}`}
-                  class="flex items-center gap-3 p-4 bg-surface-900 border border-border rounded-lg hover:border-primary transition-all group"
+                  class="flex items-start gap-3 p-5 bg-surface-800 rounded-xl hover:bg-surface-750 transition-all group col-span-1"
                 >
-                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                   </svg>
-                  <div class="flex-1">
-                    <div class="text-xs text-text-muted mb-1">Previous</div>
-                    <div class="font-medium text-white group-hover:text-primary transition-colors">{prevPage.title}</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-xs text-text-subtle mb-1 uppercase tracking-wider font-semibold">Previous</div>
+                    <div class="font-semibold text-white group-hover:text-primary transition-colors truncate">{prevPage.title}</div>
                   </div>
                 </a>
               ) : (
-                <div></div>
+                <div class="col-span-1"></div>
               )}
-              {nextPage && (
+              {nextPage ? (
                 <a
                   href={`/docs/${nextPage.slug}`}
-                  class="flex items-center gap-3 p-4 bg-surface-900 border border-border rounded-lg hover:border-primary transition-all group text-right"
+                  class="flex items-start gap-3 p-5 bg-surface-800 rounded-xl hover:bg-surface-750 transition-all group text-right col-span-1"
                 >
-                  <div class="flex-1">
-                    <div class="text-xs text-text-muted mb-1">Next</div>
-                    <div class="font-medium text-white group-hover:text-primary transition-colors">{nextPage.title}</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-xs text-text-subtle mb-1 uppercase tracking-wider font-semibold">Next</div>
+                    <div class="font-semibold text-white group-hover:text-primary transition-colors truncate">{nextPage.title}</div>
                   </div>
-                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                   </svg>
                 </a>
+              ) : (
+                <div class="col-span-1"></div>
               )}
             </div>
           )}
 
-          <!-- Article Footer -->
-          <div class="mt-6 pt-6 px-6 bg-surface-900 border border-border rounded-lg">
+          <!-- Article Footer (Simplified) -->
+          <div class="mt-8 pt-6 border-t border-surface-700">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div class="flex flex-col gap-2">
-                {currentSlug && (
-                  <a
-                    href={`https://github.com/theepicsaxguy/wiki/blob/main/src/content/docs/${currentSlug}.mdx`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-sm text-text-muted hover:text-primary transition-colors inline-flex items-center gap-2"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    Edit this page on GitHub
-                  </a>
-                )}
-                <p class="text-sm text-text-muted">Have questions? <a href="mailto:admin@goingdark.social" class="text-primary hover:underline">admin@goingdark.social</a></p>
-              </div>
-              <a
-                href="https://goingdark.social"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-primary"
-              >
-                Join our instance
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </a>
+              {currentSlug && (
+                <a
+                  href={`https://github.com/theepicsaxguy/wiki/blob/main/src/content/docs/${currentSlug}.mdx`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-text-muted hover:text-primary transition-colors inline-flex items-center gap-2"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Edit this page
+                </a>
+              )}
+              <span class="text-sm text-text-muted">
+                Questions? <a href="mailto:admin@goingdark.social" class="text-primary hover:underline font-medium">Contact us</a>
+              </span>
             </div>
           </div>
         </div>
       </main>
 
       <!-- Table of Contents Sidebar (Desktop Only) -->
-      <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-4 py-8 border-l border-border">
+      <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-6 py-8 bg-surface-850">
         <div class="space-y-6">
           {headings.length > 0 ? (
             <div>
-              <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">On this page</h3>
-              <nav id="table-of-contents" class="space-y-2 text-sm" aria-label="Table of contents">
+              <h3 class="text-xs font-bold text-text-subtle uppercase tracking-wider mb-4 flex items-center gap-2">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
+                On this page
+              </h3>
+              <nav id="table-of-contents" class="space-y-1 text-sm" aria-label="Table of contents">
                 {headings.map((heading) => (
                   <a
                     href={`#${heading.slug}`}
                     class:list={[
-                      "block py-1.5 text-text-muted hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary",
-                      heading.depth === 3 ? "pl-4 text-xs" : "pl-2"
+                      "block py-2 px-3 rounded-lg text-text-muted hover:text-white hover:bg-surface-800 transition-all border-l-2 border-transparent hover:border-primary",
+                      heading.depth === 3 ? "pl-6 text-xs" : "pl-3"
                     ]}
                     data-heading-link
                   >
@@ -293,8 +289,6 @@ if (currentSlug) {
               </nav>
             </div>
           ) : null}
-
-
         </div>
       </aside>
     </div>
@@ -414,11 +408,11 @@ if (currentSlug) {
                 headingLinks.forEach((link) => {
                   const href = link.getAttribute('href');
                   if (href === `#${id}`) {
-                    link.classList.remove('text-text-muted', 'border-transparent');
-                    link.classList.add('text-primary', 'border-primary');
+                    link.classList.remove('text-text-muted', 'border-transparent', 'hover:bg-surface-800');
+                    link.classList.add('text-white', 'border-primary', 'bg-surface-800', 'font-semibold');
                   } else {
-                    link.classList.remove('text-primary', 'border-primary');
-                    link.classList.add('text-text-muted', 'border-transparent');
+                    link.classList.remove('text-white', 'border-primary', 'bg-surface-800', 'font-semibold');
+                    link.classList.add('text-text-muted', 'border-transparent', 'hover:bg-surface-800');
                   }
                 });
               }

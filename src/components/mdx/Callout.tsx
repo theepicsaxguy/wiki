@@ -66,21 +66,21 @@ export const Callout = ({ type = 'info', title, children }: CalloutProps) => {
 
   return (
     <div className={clsx(
-      "rounded-lg border p-5 my-6 flex gap-4",
+      "rounded-xl border p-6 my-6 flex gap-4",
       style.container
     )}>
       <div className="flex-shrink-0 mt-0.5">
-        <div className={clsx("p-2 rounded-lg bg-surface-900/50", style.icon)}>
+        <div className={clsx("w-10 h-10 rounded-lg flex items-center justify-center bg-surface-900/50", style.icon)}>
           <CalloutIcon type={type} className="w-5 h-5" />
         </div>
       </div>
       <div className="flex-1 min-w-0">
         {title && (
-          <h4 className={clsx("font-semibold mb-2 text-base", style.title)}>
+          <h4 className={clsx("font-bold mb-2 text-lg", style.title)}>
             {title}
           </h4>
         )}
-        <div className={clsx("text-sm leading-relaxed prose prose-invert max-w-none", style.text)}>
+        <div className={clsx("text-base leading-relaxed prose prose-invert max-w-none", style.text)}>
           {children}
         </div>
       </div>
