@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import PagefindSearch from './PagefindSearch.astro';
+import Icon from './Icon.astro';
 import { buildNavigationTree, isActivePage, isParentOfActivePage } from '../utils/navigation';
 
 // Get all docs pages
@@ -13,14 +14,7 @@ const currentPath = Astro.url.pathname.replace('/docs/', '').replace(/\/$/, '');
 
 const isActive = (slug: string) => isActivePage(currentPath, slug);
 const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
-
-// Top-level navigation items
-const topNavItems = [
-  { name: 'Wiki Home', path: '/', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-  { name: 'Getting Started', path: '/docs/user/getting-started', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-  { name: 'Rules', path: '/docs/policies/rules', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
-  { name: 'Privacy', path: '/docs/legal/privacy', icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' },
-];
+const isHome = Astro.url.pathname === '/';
 ---
 
 <!-- Search Bar -->
@@ -28,40 +22,27 @@ const topNavItems = [
   <PagefindSearch />
 </div>
 
-<!-- Top-Level Navigation -->
-<nav aria-label="Main navigation" class="mb-6 pb-6 border-b border-border">
-  <ul class="space-y-1">
-    {topNavItems.map(item => {
-      const active = Astro.url.pathname === item.path;
-      return (
-        <li>
-          <a
-            href={item.path}
-            class:list={[
-              "group block px-3 py-3 md:py-2 rounded-lg text-sm font-medium transition-all duration-200",
-              active
-                ? "bg-primary text-white shadow-lg shadow-primary/20"
-                : "text-text-muted hover:text-white hover:bg-surface-800"
-            ]}
-          >
-            <span class="flex items-center gap-3">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={item.icon} />
-              </svg>
-              {item.name}
-            </span>
-          </a>
-        </li>
-      );
-    })}
-  </ul>
-</nav>
+<!-- Wiki Home Link (only when on docs pages) -->
+<div class="mb-6">
+  <a
+    href="/"
+    class:list={[
+      "group block px-3 py-2 rounded-[12px] text-sm font-medium transition-all",
+      isHome
+        ? "bg-primary text-white"
+        : "text-text-muted hover:text-white hover:bg-surface"
+    ]}
+  >
+    <span class="flex items-center gap-3">
+      <Icon name="home" size={16} />
+      <span>Wiki Home</span>
+    </span>
+  </a>
+</div>
 
-<div class="mb-3 flex items-center gap-2">
-  <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-  </svg>
-  <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Documentation</span>
+<div class="mb-3 flex items-center gap-2 px-3">
+  <Icon name="folder" size={16} class="text-text-subtle" />
+  <span class="text-xs font-semibold text-text-subtle uppercase tracking-wider">Documentation</span>
 </div>
 
 <nav aria-label="Documentation navigation">
@@ -76,32 +57,24 @@ const topNavItems = [
           <a
             href={`/docs/${node.slug}`}
             class:list={[
-              "group relative block px-3 py-3 md:py-2 rounded-lg text-sm font-medium transition-all duration-200",
+              "group relative block px-3 py-2 rounded-[12px] text-sm font-medium transition-all",
               active
-                ? "bg-primary text-white shadow-lg shadow-primary/20 border-l-4 border-primary-hover"
+                ? "bg-primary text-white border-l-2 border-primary"
                 : isParentNode
-                ? "text-white bg-surface-800/50 border-l-4 border-primary/50"
-                : "text-text-muted hover:text-white hover:bg-surface-800/30 hover:border-l-4 hover:border-primary/30"
+                ? "text-white bg-surface border-l-2 border-primary/50"
+                : "text-text-muted hover:text-white hover:bg-surface hover:border-l-2 hover:border-primary/30"
             ]}
           >
             <span class="flex items-center gap-2">
               {hasChildren && (
-                <svg
-                  class="w-4 h-4 text-slate-400 group-hover:text-primary transition-colors"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                </svg>
+                <Icon name="folder" size={16} class="text-text-muted group-hover:text-primary transition-colors" />
               )}
               {node.title}
             </span>
           </a>
 
           {hasChildren && (
-            <ul class="mt-1 ml-2 md:ml-4 pl-3 md:pl-4 border-l-2 border-primary/20 space-y-1">
+            <ul class="mt-1 ml-4 pl-3 border-l border-border space-y-1">
               {node.children.filter(child => !child.slug.endsWith('/index')).map(child => {
                 const childActive = isActive(child.slug);
                 const childIsParent = isParent(child.slug);
@@ -109,18 +82,18 @@ const topNavItems = [
 
                 return (
                   <li class="relative">
-                    {/* Depth indicator line */}
-                    <div class="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-primary/30 to-transparent" aria-hidden="true"></div>
+                    {/* Simple depth indicator */}
+                    <div class="absolute left-0 top-0 bottom-0 w-px bg-border" aria-hidden="true"></div>
                     
                     <a
                       href={`/docs/${child.slug}`}
                       class:list={[
-                        "group relative block px-3 py-3 md:py-1.5 rounded-md text-sm transition-all duration-200",
+                        "group relative block px-3 py-1.5 rounded-[12px] text-sm transition-all",
                         childActive
-                          ? "text-white font-medium bg-primary/20 border-l-2 border-primary"
+                          ? "text-white font-medium bg-primary/10 border-l-2 border-primary"
                           : childIsParent
-                          ? "text-white bg-surface-800/30 border-l-2 border-primary/30"
-                          : "text-text-muted hover:text-white hover:bg-surface-800/20 hover:border-l-2 hover:border-primary/20"
+                          ? "text-white bg-surface/50 border-l-2 border-primary/30"
+                          : "text-text-muted hover:text-white hover:bg-surface/30 hover:border-l-2 hover:border-primary/20"
                       ]}
                     >
                       <span class="flex items-center gap-1.5">
@@ -130,7 +103,7 @@ const topNavItems = [
                     </a>
 
                     {childHasChildren && (
-                      <ul class="mt-1 ml-2 md:ml-4 pl-3 md:pl-4 border-l-2 border-primary/10 space-y-1">
+                      <ul class="mt-1 ml-4 pl-3 border-l border-border space-y-1">
                         {child.children.filter(grandchild => !grandchild.slug.endsWith('/index')).map(grandchild => {
                           const grandchildActive = isActive(grandchild.slug);
 
@@ -139,10 +112,10 @@ const topNavItems = [
                               <a
                                 href={`/docs/${grandchild.slug}`}
                                 class:list={[
-                                  "group relative block px-3 py-3 md:py-1.5 rounded-md text-sm transition-all duration-200",
+                                  "group relative block px-3 py-1.5 rounded-[12px] text-sm transition-all",
                                   grandchildActive
-                                    ? "text-white font-medium bg-primary/20 border-l-2 border-primary"
-                                    : "text-text-muted hover:text-white hover:bg-surface-800/20 hover:border-l-2 hover:border-primary/20"
+                                    ? "text-white font-medium bg-primary/10 border-l-2 border-primary"
+                                    : "text-text-muted hover:text-white hover:bg-surface/30 hover:border-l-2 hover:border-primary/20"
                                 ]}
                               >
                                 <span class="flex items-center gap-1.5">

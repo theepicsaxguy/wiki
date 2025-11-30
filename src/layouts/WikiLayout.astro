@@ -1,6 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
 import Navigation from '../components/Navigation.astro';
 import Sidebar from '../components/Sidebar.astro';
+import Icon from '../components/Icon.astro';
 import '../styles/global.css';
 
 import type { NavItem } from '../utils/navigation';
@@ -25,6 +27,32 @@ const {
 
 const fullTitle = title === 'goingdark.social Wiki' ? title : `${title} | goingdark.social Wiki`;
 const isDocsPage = Astro.url.pathname.startsWith('/docs');
+
+// Build breadcrumb path with actual titles
+let breadcrumbPath: Array<{ title: string; href: string }> = [];
+if (currentSlug) {
+  const allDocs = await getCollection('docs');
+  const slugParts = currentSlug.split('/');
+  
+  for (let i = 0; i < slugParts.length; i++) {
+    const partialSlug = slugParts.slice(0, i + 1).join('/');
+    // Try to find the index page for this path
+    const doc = allDocs.find(d => d.slug === partialSlug || d.slug === `${partialSlug}/index`);
+    
+    if (doc) {
+      breadcrumbPath.push({
+        title: doc.data.title,
+        href: `/docs/${partialSlug}`
+      });
+    } else if (i === slugParts.length - 1) {
+      // Last part, use the current title
+      breadcrumbPath.push({
+        title: title,
+        href: `/docs/${partialSlug}`
+      });
+    }
+  }
+}
 ---
 
 <!DOCTYPE html>
@@ -135,34 +163,29 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
       <!-- Main Content -->
       <main class="flex-1 w-full min-w-0 px-4 sm:px-6 lg:px-8 py-8">
         <div class="max-w-4xl mx-auto">
-          <!-- Breadcrumbs (only on docs pages) -->
-          {Astro.url.pathname !== '/' && currentSlug && (
+          <!-- Breadcrumbs (only on docs pages) - Now showing actual titles -->
+          {Astro.url.pathname !== '/' && breadcrumbPath.length > 0 && (
             <nav class="mb-6" aria-label="Breadcrumb">
-              <ol class="flex items-center gap-2 text-sm font-mono">
+              <ol class="flex items-center gap-2 text-sm">
                 <li>
                   <a href="/" class="text-text-muted hover:text-primary transition-colors flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    home
+                    <Icon name="home" size={14} />
+                    <span>Home</span>
                   </a>
                 </li>
-                {currentSlug.split('/').map((part, i, arr) => {
-                  const isLast = i === arr.length - 1;
-                  const path = '/docs/' + arr.slice(0, i + 1).join('/');
+                {breadcrumbPath.map((crumb, i) => {
+                  const isLast = i === breadcrumbPath.length - 1;
                   return (
                     <>
                       <li>
-                        <svg class="w-4 h-4 text-surface-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <Icon name="chevron-right" size={14} class="text-border" />
                       </li>
                       <li>
                         {isLast ? (
-                          <span class="text-primary font-medium">{part}</span>
+                          <span class="text-primary font-medium">{crumb.title}</span>
                         ) : (
-                          <a href={path} class="text-text-muted hover:text-primary transition-colors">
-                            {part}
+                          <a href={crumb.href} class="text-text-muted hover:text-primary transition-colors">
+                            {crumb.title}
                           </a>
                         )}
                       </li>
