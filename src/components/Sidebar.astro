@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Search from './Search';
+import { buildNavigationTree, isActivePage, isParentOfActivePage } from '../utils/navigation';
 
 // Get all docs pages
 const allDocs = await getCollection('docs');
@@ -12,106 +13,13 @@ const searchDocs = allDocs.map(doc => ({
   description: doc.data.description
 }));
 
-// Build a truly recursive tree structure
-type NavItem = {
-  title: string;
-  slug: string;
-  weight: number;
-  children: NavItem[];
-  path: string[];
-};
-
-function buildTree(docs: any[]): NavItem[] {
-  const tree: Map<string, NavItem> = new Map();
-
-  // First pass: create all nodes
-  docs.forEach(doc => {
-    const parts = doc.slug.split('/');
-    const isIndex = parts[parts.length - 1] === 'index';
-
-    if (isIndex && parts.length === 1) return; // Skip root index
-
-    // Create node for this doc
-    const nodeKey = doc.slug;
-    if (!tree.has(nodeKey)) {
-      tree.set(nodeKey, {
-        title: doc.data.title,
-        slug: doc.slug,
-        weight: doc.data.weight || 999,
-        children: [],
-        path: parts
-      });
-    } else {
-      // Update existing node with doc data
-      const node = tree.get(nodeKey)!;
-      node.title = doc.data.title;
-      node.weight = doc.data.weight || 999;
-    }
-  });
-
-  // Second pass: build parent-child relationships
-  const rootNodes: NavItem[] = [];
-  const nodesBySlug = new Map(Array.from(tree.entries()));
-
-  nodesBySlug.forEach((node, slug) => {
-    const parts = node.path;
-
-    if (parts.length === 1) {
-      // Top level
-      rootNodes.push(node);
-    } else {
-      // Find parent
-      const parentPath = parts.slice(0, -1);
-      const parentSlug = parentPath.join('/');
-      const parentIndexSlug = parentSlug + '/index';
-
-      let parent = nodesBySlug.get(parentSlug) || nodesBySlug.get(parentIndexSlug);
-
-      if (parent && !node.slug.endsWith('/index')) {
-        parent.children.push(node);
-      } else if (!parent && parts.length === 2) {
-        // Parent doesn't exist, add to root
-        rootNodes.push(node);
-      }
-    }
-  });
-
-  // Sort recursively
-  function sortNodes(nodes: NavItem[]): NavItem[] {
-    return nodes
-      .sort((a, b) => {
-        // Index pages first
-        if (a.slug.endsWith('/index') && !b.slug.endsWith('/index')) return -1;
-        if (!a.slug.endsWith('/index') && b.slug.endsWith('/index')) return 1;
-        return a.weight - b.weight;
-      })
-      .map(node => ({
-        ...node,
-        children: sortNodes(node.children)
-      }));
-  }
-
-  return sortNodes(rootNodes);
-}
-
-const navigation = buildTree(allDocs);
+const navigation = buildNavigationTree(allDocs);
 
 // Get current page
 const currentPath = Astro.url.pathname.replace('/docs/', '').replace(/\/$/, '');
 
-function isActive(slug: string): boolean {
-  return currentPath === slug || currentPath === slug.replace('/index', '');
-}
-
-function isParentOfActive(slug: string): boolean {
-  return currentPath.startsWith(slug + '/') || currentPath.startsWith(slug.replace('/index', '') + '/');
-}
-
-// Recursive component for rendering tree
-interface TreeNodeProps {
-  node: NavItem;
-  depth: number;
-}
+const isActive = (slug: string) => isActivePage(currentPath, slug);
+const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
 ---
 
 <!-- Search Bar -->
@@ -123,9 +31,8 @@ interface TreeNodeProps {
   <ul class="space-y-1">
     {navigation.map(node => {
       const active = isActive(node.slug);
-      const isParent = isParentOfActive(node.slug);
+      const isParentNode = isParent(node.slug);
       const hasChildren = node.children.length > 0;
-      const isIndexPage = node.slug.endsWith('/index');
 
       return (
         <li>
@@ -135,7 +42,7 @@ interface TreeNodeProps {
               "block px-3 py-2 rounded-lg text-sm font-medium transition-all border-l-3",
               active
                 ? "bg-indigo-500/20 text-white border-indigo-400"
-                : isParent
+                : isParentNode
                 ? "bg-indigo-500/10 text-slate-200 border-indigo-500/50"
                 : "text-slate-300 hover:bg-[#1e232f] hover:text-white border-transparent hover:border-slate-600"
             ]}
@@ -160,7 +67,7 @@ interface TreeNodeProps {
             <ul class="mt-1 ml-4 pl-4 border-l-2 border-[#292e3b] space-y-1">
               {node.children.filter(child => !child.slug.endsWith('/index')).map(child => {
                 const childActive = isActive(child.slug);
-                const childIsParent = isParentOfActive(child.slug);
+                const childIsParent = isParent(child.slug);
                 const childHasChildren = child.children.length > 0;
 
                 return (

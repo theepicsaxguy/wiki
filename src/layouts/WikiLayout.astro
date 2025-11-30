@@ -1,15 +1,28 @@
 ---
 import Navigation from '../components/Navigation.astro';
-import DocsSidebar from '../components/DocsSidebar.astro';
-import MobileSidebar from '../components/MobileSidebar';
+import Sidebar from '../components/Sidebar.astro';
 import '../styles/global.css';
+
+import type { NavItem } from '../utils/navigation';
 
 interface Props {
   title?: string;
   description?: string;
+  headings?: Array<{ depth: number; text: string; slug: string }>;
+  currentSlug?: string;
+  prevPage?: NavItem | null;
+  nextPage?: NavItem | null;
 }
 
-const { title = 'goingdark.social Wiki', description = 'Documentation and wiki for goingdark.social - a privacy-focused Mastodon instance' } = Astro.props;
+const {
+  title = 'goingdark.social Wiki',
+  description = 'Documentation and wiki for goingdark.social - a privacy-focused Mastodon instance',
+  headings = [],
+  currentSlug = '',
+  prevPage = null,
+  nextPage = null
+} = Astro.props;
+
 const fullTitle = title === 'goingdark.social Wiki' ? title : `${title} | goingdark.social Wiki`;
 const isDocsPage = Astro.url.pathname.startsWith('/docs');
 ---
@@ -32,8 +45,8 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     <div class="flex-1 flex max-w-7xl mx-auto w-full">
       <!-- Docs Sidebar (Desktop Only) -->
       {isDocsPage && (
-        <div id="desktop-sidebar" class="hidden lg:block w-64 flex-shrink-0 border-r border-surface-700/50 px-4 py-8">
-          <DocsSidebar />
+        <div class="hidden lg:block w-64 flex-shrink-0 border-r border-surface-700/50 px-4 py-8">
+          <Sidebar />
         </div>
       )}
 
@@ -74,7 +87,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
 
               <!-- Content -->
               <div class="p-4">
-                <DocsSidebar />
+                <Sidebar />
               </div>
             </div>
           </div>
@@ -98,11 +111,60 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
             <slot />
           </article>
 
+          <!-- Next/Previous Navigation -->
+          {(prevPage || nextPage) && (
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {prevPage ? (
+                <a
+                  href={`/docs/${prevPage.slug}`}
+                  class="flex items-center gap-3 p-4 bg-surface-900 border border-border rounded-lg hover:border-primary transition-all group"
+                >
+                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                  <div class="flex-1">
+                    <div class="text-xs text-text-muted mb-1">Previous</div>
+                    <div class="font-medium text-white group-hover:text-primary transition-colors">{prevPage.title}</div>
+                  </div>
+                </a>
+              ) : (
+                <div></div>
+              )}
+              {nextPage && (
+                <a
+                  href={`/docs/${nextPage.slug}`}
+                  class="flex items-center gap-3 p-4 bg-surface-900 border border-border rounded-lg hover:border-primary transition-all group text-right"
+                >
+                  <div class="flex-1">
+                    <div class="text-xs text-text-muted mb-1">Next</div>
+                    <div class="font-medium text-white group-hover:text-primary transition-colors">{nextPage.title}</div>
+                  </div>
+                  <svg class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          )}
+
           <!-- Article Footer -->
           <div class="mt-6 pt-6 px-6 bg-surface-900 border border-border rounded-lg">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div class="text-sm text-text-muted">
-                <p>Have questions? <a href="mailto:admin@goingdark.social" class="text-primary hover:underline">admin@goingdark.social</a></p>
+              <div class="flex flex-col gap-2">
+                {currentSlug && (
+                  <a
+                    href={`https://github.com/theepicsaxguy/wiki/blob/main/src/content/docs/${currentSlug}.mdx`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-text-muted hover:text-primary transition-colors inline-flex items-center gap-2"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit this page on GitHub
+                  </a>
+                )}
+                <p class="text-sm text-text-muted">Have questions? <a href="mailto:admin@goingdark.social" class="text-primary hover:underline">admin@goingdark.social</a></p>
               </div>
               <a
                 href="https://goingdark.social"
@@ -123,12 +185,25 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
       <!-- Table of Contents Sidebar (Desktop Only) -->
       <aside class="hidden xl:block w-64 flex-shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-4 py-8 border-l border-surface-700/50">
         <div class="space-y-6">
-          <div>
-            <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">On this page</h3>
-            <nav id="table-of-contents" class="space-y-2 text-sm" aria-label="Table of contents">
-              <!-- TOC will be populated by JavaScript -->
-            </nav>
-          </div>
+          {headings.length > 0 && (
+            <div>
+              <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">On this page</h3>
+              <nav id="table-of-contents" class="space-y-2 text-sm" aria-label="Table of contents">
+                {headings.map((heading) => (
+                  <a
+                    href={`#${heading.slug}`}
+                    class:list={[
+                      "block py-1.5 text-text-muted hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary",
+                      heading.depth === 3 ? "pl-4 text-xs" : "pl-2"
+                    ]}
+                    data-heading-link
+                  >
+                    {heading.text}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          )}
 
           <div class="pt-6 border-t border-surface-700/50">
             <h3 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Quick Links</h3>
@@ -223,7 +298,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
     </footer>
 
     <script>
-      // Mobile Sidebar
+      // Mobile Sidebar Toggle
       const mobileButton = document.getElementById('mobile-sidebar-button');
       const mobileOverlay = document.getElementById('mobile-sidebar-overlay');
       const mobileClose = document.getElementById('mobile-sidebar-close');
@@ -254,52 +329,42 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
         });
       }
 
-      // Generate Table of Contents
+      // Table of Contents Active State (IntersectionObserver)
       document.addEventListener('DOMContentLoaded', () => {
-        const article = document.querySelector('.wiki-content');
-        const toc = document.getElementById('table-of-contents');
+        const headingLinks = document.querySelectorAll('[data-heading-link]');
 
-        if (!article || !toc) return;
+        if (headingLinks.length === 0) return;
 
-        const headings = article.querySelectorAll('h2, h3');
+        const headings = Array.from(headingLinks).map(link => {
+          const href = link.getAttribute('href');
+          if (!href) return null;
+          return document.querySelector(href);
+        }).filter(Boolean);
 
-        if (headings.length === 0) {
-          toc.innerHTML = '<p class="text-text-muted text-xs">No headings found</p>';
-          return;
-        }
+        if (headings.length === 0) return;
 
-        headings.forEach((heading, index) => {
-          const id = heading.id || `heading-${index}`;
-          heading.id = id;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const id = entry.target.id;
+                headingLinks.forEach((link) => {
+                  const href = link.getAttribute('href');
+                  if (href === `#${id}`) {
+                    link.classList.remove('text-text-muted', 'border-transparent');
+                    link.classList.add('text-primary', 'border-primary');
+                  } else {
+                    link.classList.remove('text-primary', 'border-primary');
+                    link.classList.add('text-text-muted', 'border-transparent');
+                  }
+                });
+              }
+            });
+          },
+          { rootMargin: '-100px 0px -66%' }
+        );
 
-          const link = document.createElement('a');
-          link.href = `#${id}`;
-          link.textContent = heading.textContent || '';
-          link.className = `block py-1.5 text-text-muted hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary ${
-            heading.tagName === 'H3' ? 'pl-4 text-xs' : 'pl-2'
-          }`;
-
-          toc.appendChild(link);
-
-          // Highlight active section on scroll
-          const observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  document.querySelectorAll('#table-of-contents a').forEach((a) => {
-                    a.classList.remove('text-primary', 'border-primary');
-                    a.classList.add('text-text-muted', 'border-transparent');
-                  });
-                  link.classList.remove('text-text-muted', 'border-transparent');
-                  link.classList.add('text-primary', 'border-primary');
-                }
-              });
-            },
-            { rootMargin: '-100px 0px -66%' }
-          );
-
-          observer.observe(heading);
-        });
+        headings.forEach((heading) => observer.observe(heading));
       });
 
       // Smooth scroll for anchor links
