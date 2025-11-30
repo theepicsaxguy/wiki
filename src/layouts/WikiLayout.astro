@@ -50,61 +50,80 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
         </div>
       )}
 
-      <!-- Mobile Docs Sidebar (Drawer) -->
-      {isDocsPage && (
-        <>
-          <!-- Mobile FAB Button -->
-          <button
-            id="mobile-sidebar-button"
-            class="lg:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-primary hover:bg-primary-hover text-white rounded-full shadow-lg flex items-center justify-center transition-colors"
-            aria-label="Open navigation menu"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+      <!-- Mobile Sidebar (Drawer) - Available on all pages -->
+      <div id="mobile-sidebar-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
 
-          <!-- Mobile Drawer -->
-          <div id="mobile-sidebar-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
-            <!-- Backdrop -->
-            <div class="absolute inset-0 bg-black/60" aria-hidden="true"></div>
-
-            <!-- Drawer -->
-            <div class="absolute top-0 left-0 h-full w-80 max-w-[85vw] bg-surface-900 border-r border-border shadow-2xl overflow-y-auto">
-              <!-- Header -->
-              <div class="sticky top-0 z-10 bg-surface-900 border-b border-border px-4 py-4 flex items-center justify-between">
-                <h2 class="text-lg font-bold text-white">Navigation</h2>
-                <button
-                  id="mobile-sidebar-close"
-                  class="p-2 hover:bg-surface-800 rounded-lg transition-colors"
-                  aria-label="Close menu"
-                >
-                  <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Content -->
-              <div class="p-4">
-                <Sidebar />
-              </div>
-            </div>
+        <!-- Drawer -->
+        <div class="absolute top-0 left-0 h-full w-80 max-w-[85vw] bg-surface-900 border-r border-border shadow-2xl overflow-y-auto">
+          <!-- Header -->
+          <div class="sticky top-0 z-10 bg-surface-900 border-b border-border px-4 py-4 flex items-center justify-between">
+            <h2 class="text-lg font-bold text-white">Navigation</h2>
+            <button
+              id="mobile-sidebar-close"
+              class="p-2 hover:bg-surface-800 rounded-lg transition-colors"
+              aria-label="Close menu"
+            >
+              <svg class="w-5 h-5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-        </>
-      )}
+
+          <!-- Content -->
+          <div class="p-4">
+            {isDocsPage ? (
+              <Sidebar />
+            ) : (
+              <!-- Simple navigation for non-docs pages -->
+              <nav aria-label="Main navigation">
+                <ul class="space-y-1">
+                  <li>
+                    <a href="/" class="block px-3 py-3 rounded-md text-sm font-medium bg-primary text-white">
+                      Wiki Home
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/docs/user/getting-started" class="block px-3 py-3 rounded-md text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-colors">
+                      Getting Started
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/docs/policies/rules" class="block px-3 py-3 rounded-md text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-colors">
+                      Rules
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/docs/legal/privacy" class="block px-3 py-3 rounded-md text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-colors">
+                      Privacy
+                    </a>
+                  </li>
+                  <li class="pt-4 border-t border-border">
+                    <a href="https://goingdark.social" target="_blank" rel="noopener noreferrer" class="block px-3 py-3 rounded-md text-sm font-medium bg-surface-800 hover:bg-surface-700 border border-border text-white text-center transition-colors">
+                      Visit Instance →
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            )}
+          </div>
+        </div>
+      </div>
 
       <!-- Main Content -->
       <main class="flex-1 w-full min-w-0 px-4 sm:px-6 lg:px-8 py-8">
         <div class="max-w-4xl mx-auto">
-          <!-- Breadcrumbs -->
-          <nav class="mb-4" aria-label="Breadcrumb">
-            <ol class="flex items-center gap-2 text-sm text-text-muted font-mono">
-              <li><a href="/" class="hover:text-primary transition-colors">docs</a></li>
-              <li><span class="text-surface-600">/</span></li>
-              <li class="text-text-main">{title}</li>
-            </ol>
-          </nav>
+          <!-- Breadcrumbs (only on docs pages) -->
+          {Astro.url.pathname !== '/' && (
+            <nav class="mb-4" aria-label="Breadcrumb">
+              <ol class="flex items-center gap-2 text-sm text-text-muted font-mono">
+                <li><a href="/" class="hover:text-primary transition-colors">docs</a></li>
+                <li><span class="text-surface-600">/</span></li>
+                <li class="text-text-main">{title}</li>
+              </ol>
+            </nav>
+          )}
 
           <!-- Article Content Card -->
           <article class="wiki-content bg-surface-900 border border-border rounded-lg p-6 sm:p-8">
@@ -244,7 +263,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="md:col-span-2">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center">
+              <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
@@ -275,7 +294,7 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
               <li class="text-text-muted">admin@goingdark.social</li>
               <li class="text-text-muted">@admin@goingdark.social</li>
               <li class="mt-4">
-                <a href="https://goingdark.social" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-purple-600 hover:from-primary-hover hover:to-purple-700 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+                <a href="https://goingdark.social" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white text-sm font-medium rounded-lg transition-all duration-200">
                   Join Now
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -299,20 +318,22 @@ const isDocsPage = Astro.url.pathname.startsWith('/docs');
 
     <script>
       // Mobile Sidebar Toggle
-      const mobileButton = document.getElementById('mobile-sidebar-button');
       const mobileOverlay = document.getElementById('mobile-sidebar-overlay');
       const mobileClose = document.getElementById('mobile-sidebar-close');
 
-      if (mobileButton && mobileOverlay) {
-        mobileButton.addEventListener('click', () => {
-          mobileOverlay.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-        });
-
+      if (mobileOverlay) {
         const closeSidebar = () => {
           mobileOverlay.classList.add('hidden');
           document.body.style.overflow = '';
         };
+
+        const openSidebar = () => {
+          mobileOverlay.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        };
+
+        // Listen for custom event from Navigation component
+        window.addEventListener('open-sidebar', openSidebar);
 
         mobileClose?.addEventListener('click', closeSidebar);
         mobileOverlay.addEventListener('click', (e) => {

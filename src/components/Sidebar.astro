@@ -1,17 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import Search from './Search';
+import PagefindSearch from './PagefindSearch.astro';
 import { buildNavigationTree, isActivePage, isParentOfActivePage } from '../utils/navigation';
 
 // Get all docs pages
 const allDocs = await getCollection('docs');
-
-// Prepare search data
-const searchDocs = allDocs.map(doc => ({
-  slug: doc.slug,
-  title: doc.data.title,
-  description: doc.data.description
-}));
 
 const navigation = buildNavigationTree(allDocs);
 
@@ -20,12 +13,44 @@ const currentPath = Astro.url.pathname.replace('/docs/', '').replace(/\/$/, '');
 
 const isActive = (slug: string) => isActivePage(currentPath, slug);
 const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
+
+// Top-level navigation items
+const topNavItems = [
+  { name: 'Wiki Home', path: '/' },
+  { name: 'Getting Started', path: '/docs/user/getting-started' },
+  { name: 'Rules', path: '/docs/policies/rules' },
+  { name: 'Privacy', path: '/docs/legal/privacy' },
+];
 ---
 
 <!-- Search Bar -->
 <div class="mb-6">
-  <Search client:load docs={searchDocs} />
+  <PagefindSearch />
 </div>
+
+<!-- Top-Level Navigation -->
+<nav aria-label="Main navigation" class="mb-6 pb-6 border-b border-border">
+  <ul class="space-y-1">
+    {topNavItems.map(item => {
+      const active = Astro.url.pathname === item.path;
+      return (
+        <li>
+          <a
+            href={item.path}
+            class:list={[
+              "block px-3 py-3 md:py-2 rounded-md text-sm font-medium transition-colors",
+              active
+                ? "bg-primary text-white"
+                : "text-text-muted hover:text-white hover:bg-surface-800"
+            ]}
+          >
+            {item.name}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</nav>
 
 <nav aria-label="Documentation navigation">
   <ul class="space-y-1">
@@ -39,7 +64,7 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
           <a
             href={`/docs/${node.slug}`}
             class:list={[
-              "block px-3 py-2 rounded-md text-sm font-medium transition-colors",
+              "block px-3 py-3 md:py-2 rounded-md text-sm font-medium transition-colors",
               active
                 ? "bg-primary text-white"
                 : isParentNode
@@ -64,7 +89,7 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
           </a>
 
           {hasChildren && (
-            <ul class="mt-1 ml-4 pl-4 border-l-2 border-border space-y-1">
+            <ul class="mt-1 ml-2 md:ml-4 pl-2 md:pl-4 border-l-2 border-border space-y-1">
               {node.children.filter(child => !child.slug.endsWith('/index')).map(child => {
                 const childActive = isActive(child.slug);
                 const childIsParent = isParent(child.slug);
@@ -75,7 +100,7 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
                     <a
                       href={`/docs/${child.slug}`}
                       class:list={[
-                        "block px-3 py-1.5 rounded-md text-sm transition-colors",
+                        "block px-3 py-3 md:py-1.5 rounded-md text-sm transition-colors",
                         childActive
                           ? "text-white font-medium bg-primary"
                           : childIsParent
@@ -87,7 +112,7 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
                     </a>
 
                     {childHasChildren && (
-                      <ul class="mt-1 ml-4 pl-4 border-l-2 border-border space-y-1">
+                      <ul class="mt-1 ml-2 md:ml-4 pl-2 md:pl-4 border-l-2 border-border space-y-1">
                         {child.children.filter(grandchild => !grandchild.slug.endsWith('/index')).map(grandchild => {
                           const grandchildActive = isActive(grandchild.slug);
 
@@ -96,7 +121,7 @@ const isParent = (slug: string) => isParentOfActivePage(currentPath, slug);
                               <a
                                 href={`/docs/${grandchild.slug}`}
                                 class:list={[
-                                  "block px-3 py-1.5 rounded-md text-sm transition-colors",
+                                  "block px-3 py-3 md:py-1.5 rounded-md text-sm transition-colors",
                                   grandchildActive
                                     ? "text-white font-medium bg-primary"
                                     : "text-text-muted hover:text-white"
