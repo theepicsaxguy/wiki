@@ -29,6 +29,10 @@
   --color-primary-subtle: rgba(99, 100, 255, 0.1);
   --color-primary-border: rgba(99, 100, 255, 0.2);
   
+  /* Secondary/Gradient palette (for CTAs) */
+  --color-secondary: #8b5cf6;         /* Purple for gradients */
+  --color-secondary-hover: #a78bfa;   /* Lighter purple */
+  
   /* Text hierarchy */
   --color-text-main: #d9e1e8;
   --color-text-subtle: #6c7891;
