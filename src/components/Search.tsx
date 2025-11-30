@@ -88,7 +88,7 @@ export default function Search({ docs }: SearchProps) {
           />
         </svg>
         <kbd class="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 bg-surface-800 border border-border rounded text-xs text-slate-400 font-mono hidden sm:inline-block">
-          ⌘K
+          Ctrl+K
         </kbd>
       </div>
 

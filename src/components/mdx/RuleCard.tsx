@@ -68,9 +68,10 @@ export default function RuleCard({ title, icon = '📋', severity = 'medium', nu
         <div
           class="fixed inset-0 z-[100] flex items-center justify-center p-4"
           onClick={() => setIsOpen(false)}
+          role="presentation"
         >
           {/* Backdrop with glassmorphism */}
-          <div class="absolute inset-0 bg-black/70 backdrop-blur-md" aria-hidden="true" />
+          <div class="absolute inset-0 bg-black/70 backdrop-blur-md" />
 
           {/* Modal Content */}
           <div
