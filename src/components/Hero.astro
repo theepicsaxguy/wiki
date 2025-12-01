@@ -15,30 +15,67 @@ const searchDocs = allDocs.map(doc => ({
 }));
 ---
 
-<div class="relative py-20 text-center overflow-hidden">
+<div class="relative py-16 md:py-24 text-center overflow-hidden fade-in-up">
   <!-- The Glow - Radial gradient bloom for depth -->
-  <div 
-    class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none -z-10 opacity-30"
-    style="background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);"
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none -z-10 opacity-40"
+    style="background: radial-gradient(circle, rgba(147, 112, 255, 0.25) 0%, transparent 70%);"
     aria-hidden="true"
   ></div>
-  
-  <h1 class="text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
-    GoingDark <span class="text-primary">Wiki</span>
+
+  <!-- Friendly welcome badge -->
+  <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6 scale-in">
+    <span class="text-2xl">👋</span>
+    <span class="text-sm font-semibold text-primary">Welcome to our community!</span>
+  </div>
+
+  <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-5" style="font-family: var(--font-display);">
+    <span class="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">GoingDark.social</span>
+    <br />
+    <span class="text-primary text-3xl md:text-4xl lg:text-5xl">Community Wiki</span>
   </h1>
-  
-  <p class="text-xl text-text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-    The definitive guide to our privacy-focused Mastodon instance.
-    Learn how to protect your data and master the Fediverse.
+
+  <p class="text-lg md:text-xl text-text-muted max-w-2xl mx-auto mb-8 leading-relaxed px-4">
+    Your friendly guide to our privacy-focused Mastodon instance.
+    <br class="hidden sm:block" />
+    Learn about our values, get started, and join our community.
   </p>
-  
-  <!-- Search centered -->
-  <div class="max-w-lg mx-auto mb-4">
-    <Search client:load docs={searchDocs} />
+
+  <!-- Quick start badges -->
+  <div class="flex flex-wrap items-center justify-center gap-3 mb-10 px-4">
+    <a href="/docs/user/getting-started" class="inline-flex items-center gap-2 px-4 py-2 bg-surface-800 hover:bg-surface-750 rounded-xl text-sm font-medium text-text-muted hover:text-white transition-all border border-surface-700 hover:border-primary/30 group">
+      <span class="text-lg group-hover:scale-110 transition-transform">🚀</span>
+      <span>Quick Start</span>
+    </a>
+    <a href="/docs/policies/rules" class="inline-flex items-center gap-2 px-4 py-2 bg-surface-800 hover:bg-surface-750 rounded-xl text-sm font-medium text-text-muted hover:text-white transition-all border border-surface-700 hover:border-primary/30 group">
+      <span class="text-lg group-hover:scale-110 transition-transform">📜</span>
+      <span>Community Rules</span>
+    </a>
+    <a href="https://goingdark.social" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-primary-active text-white rounded-xl text-sm font-semibold shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all border border-white/10 group">
+      <span class="text-lg group-hover:scale-110 transition-transform">✨</span>
+      <span>Join Instance</span>
+      <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
+    </a>
   </div>
   
-  <div class="text-sm text-text-subtle flex items-center justify-center gap-2">
-    <kbd class="px-3 py-1.5 bg-surface-800 rounded-lg text-text-muted font-mono text-xs font-semibold">Ctrl+K</kbd>
-    <span>to search</span>
+  <!-- Search centered -->
+  <div class="max-w-lg mx-auto mb-4 px-4">
+    <Search client:load docs={searchDocs} />
+  </div>
+
+  <div class="text-sm text-text-subtle flex items-center justify-center gap-2 flex-wrap">
+    <div class="flex items-center gap-2">
+      <kbd class="px-3 py-1.5 bg-surface-800 rounded-lg text-text-muted font-mono text-xs font-semibold border border-surface-700">Ctrl+K</kbd>
+      <span>to search</span>
+    </div>
+    <span class="text-surface-600">•</span>
+    <span class="flex items-center gap-1.5">
+      <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>Instant answers</span>
+    </span>
   </div>
 </div>

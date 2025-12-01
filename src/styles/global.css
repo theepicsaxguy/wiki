@@ -22,13 +22,17 @@
   --color-border: #33374a;
   --color-border-subtle: #33374a;
   
-  /* Primary Accent - Electric Violet (High contrast for dark mode) */
-  --color-primary: #7c7dff;           /* Primary actions, links */
-  --color-primary-hover: #9c9dff;     /* Hover state */
-  --color-primary-active: #5c5dff;    /* Active/pressed state */
-  --color-primary-subtle: rgba(124, 125, 255, 0.08);  /* Subtle backgrounds */
-  --color-primary-border: rgba(124, 125, 255, 0.25);  /* Hairline borders */
-  --color-primary-glow: rgba(124, 125, 255, 0.15);    /* Bloom/glow effect */
+  /* Primary Accent - Mastodon Purple (Friendly, welcoming) */
+  --color-primary: #9370ff;           /* Primary actions, links - Softer purple */
+  --color-primary-hover: #a68eff;     /* Hover state */
+  --color-primary-active: #7b5aff;    /* Active/pressed state */
+  --color-primary-subtle: rgba(147, 112, 255, 0.08);  /* Subtle backgrounds */
+  --color-primary-border: rgba(147, 112, 255, 0.25);  /* Hairline borders */
+  --color-primary-glow: rgba(147, 112, 255, 0.2);    /* Bloom/glow effect */
+
+  /* Accent Colors - Warm and inviting */
+  --color-accent-warm: #ff8c42;       /* Warm orange for highlights */
+  --color-accent-teal: #42d9c8;       /* Teal for success/info */
   
   /* Legacy accent aliases */
   --color-accent: #7c7dff;
@@ -50,7 +54,8 @@
   --color-text-disabled: #4b5563;     /* Disabled state */
   
   /* Typography Scale (Modern, generous sizing) */
-  --font-sans: Inter, Roboto, system-ui, -apple-system, sans-serif;
+  --font-display: 'Raleway', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Source Sans 3', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   
   --font-size-xs: 0.75rem;      /* 12px */
@@ -96,6 +101,10 @@
 
 body {
   background: var(--color-surface-900);
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(147, 112, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(147, 112, 255, 0.02) 0%, transparent 50%);
+  background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
@@ -230,31 +239,50 @@ body {
 
 .wiki-content h1 {
   font-size: var(--font-size-4xl);
-  font-weight: 700;
+  font-weight: 800;
+  font-family: var(--font-display);
   color: var(--color-text-white);
-  letter-spacing: -0.025em;
-  margin-bottom: 1.25rem;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.5rem;
   line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 0%, #e0d5ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .wiki-content h2 {
   font-size: var(--font-size-2xl);
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-display);
   color: var(--color-text-white);
-  letter-spacing: -0.02em;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--color-surface-700);
+  border-bottom: 2px solid var(--color-surface-700);
   line-height: 1.2;
+  position: relative;
+}
+
+.wiki-content h2::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 2px;
 }
 
 .wiki-content h3 {
   font-size: var(--font-size-xl);
   font-weight: 600;
+  font-family: var(--font-display);
   color: var(--color-text-white);
   margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.875rem;
   line-height: 1.3;
 }
 
@@ -467,7 +495,7 @@ body {
   border: 1px solid var(--color-surface-700);
 }
 
-/* Animations */
+/* Animations - Smooth, welcoming */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -476,6 +504,26 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -497,8 +545,25 @@ body {
   }
 }
 
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
 .fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Focus Styles - Enhanced Electric Violet */
@@ -512,13 +577,13 @@ textarea:focus-visible {
   box-shadow: 0 0 0 4px var(--color-primary-glow);
 }
 
-/* Modern Button System - No borders, elevation-based */
+/* Modern Button System - Friendly, welcoming */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  padding: 0.75rem 1.5rem;
   font-size: var(--font-size-sm);
   font-weight: 600;
   border-radius: var(--radius-lg);
@@ -528,27 +593,29 @@ textarea:focus-visible {
   text-decoration: none;
   position: relative;
   overflow: hidden;
+  font-family: var(--font-sans);
 }
 
 .btn-primary {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-active) 100%);
   color: white;
-  box-shadow: 0 0 30px var(--color-primary-glow);
+  box-shadow: 0 4px 20px var(--color-primary-glow), 0 0 40px rgba(147, 112, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
   opacity: 0;
   transition: opacity var(--transition-base);
 }
 
 .btn-primary:hover {
-  background: var(--color-primary-hover);
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-primary) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px var(--color-primary-glow), 0 0 60px var(--color-primary-glow);
+  box-shadow: 0 8px 32px var(--color-primary-glow), 0 0 60px rgba(147, 112, 255, 0.25);
 }
 
 .btn-primary:hover::before {
@@ -556,7 +623,7 @@ textarea:focus-visible {
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
