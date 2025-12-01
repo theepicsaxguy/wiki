@@ -4,14 +4,14 @@
   /* Modern Dark Design System - 2025 Edition */
   /* Philosophy: Elevation over Strokes, Subtle Blooms, Typographic Confidence */
   
-  /* Surface Elevation Hierarchy (Level-based, no borders needed) */
-  --color-surface-950: #0f1115;      /* Level 0 - Deepest background */
-  --color-surface-900: #16181d;      /* Level 1 - Page background */
-  --color-surface-850: #1c1f26;      /* Level 1.5 - Sidebar */
-  --color-surface-800: #23262f;      /* Level 2 - Cards, elevated surfaces */
-  --color-surface-750: #2a2e38;      /* Level 2.5 - Card hover */
-  --color-surface-700: #33374a;      /* Level 3 - Inputs, borders (minimal use) */
-  --color-surface-600: #4a4f63;      /* Level 4 - Disabled states */
+  /* Surface Elevation Hierarchy - Mastodon Official Colors */
+  --color-surface-950: #181821;      /* Level 0 - Deepest background (grey-950) */
+  --color-surface-900: #181821;      /* Level 1 - Page background (grey-950) */
+  --color-surface-850: #292938;      /* Level 1.5 - Sidebar (grey-800) */
+  --color-surface-800: #292938;      /* Level 2 - Cards, elevated surfaces (grey-800) */
+  --color-surface-750: #444664;      /* Level 2.5 - Card hover (grey-700) */
+  --color-surface-700: #444664;      /* Level 3 - Inputs, borders (grey-700) */
+  --color-surface-600: #545778;      /* Level 4 - Disabled states (grey-600) */
   
   /* Legacy aliases (backward compatibility - map to new elevation) */
   --color-bg-main: #16181d;
@@ -22,17 +22,17 @@
   --color-border: #33374a;
   --color-border-subtle: #33374a;
   
-  /* Primary Accent - Mastodon Purple (Friendly, welcoming) */
-  --color-primary: #9370ff;           /* Primary actions, links - Softer purple */
-  --color-primary-hover: #a68eff;     /* Hover state */
-  --color-primary-active: #7b5aff;    /* Active/pressed state */
-  --color-primary-subtle: rgba(147, 112, 255, 0.08);  /* Subtle backgrounds */
-  --color-primary-border: rgba(147, 112, 255, 0.25);  /* Hairline borders */
-  --color-primary-glow: rgba(147, 112, 255, 0.2);    /* Bloom/glow effect */
+  /* Primary Accent - Mastodon Official Indigo */
+  --color-primary: #8886ff;           /* Primary actions, links (indigo-400) */
+  --color-primary-hover: #a5abfd;     /* Hover state (indigo-300) */
+  --color-primary-active: #6147e6;    /* Active/pressed state (indigo-600) */
+  --color-primary-subtle: rgba(136, 134, 255, 0.1);  /* Subtle backgrounds */
+  --color-primary-border: rgba(136, 134, 255, 0.18);  /* Hairline borders */
 
-  /* Accent Colors - Warm and inviting */
-  --color-accent-warm: #ff8c42;       /* Warm orange for highlights */
-  --color-accent-teal: #42d9c8;       /* Teal for success/info */
+  /* Accent Colors - Mastodon Official */
+  --color-accent-error: #ff637e;      /* Error/Red (red-500) */
+  --color-accent-warning: #ffb900;    /* Warning/Yellow (yellow-400) */
+  --color-accent-success: #05df72;    /* Success/Green (green-400) */
   
   /* Legacy accent aliases */
   --color-accent: #7c7dff;
@@ -45,13 +45,13 @@
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
   
-  /* Text Hierarchy (Improved contrast ratios) */
+  /* Text Hierarchy - Mastodon Official */
   --color-text-white: #ffffff;        /* Pure white - Headings only */
-  --color-text-primary: #e5e7eb;      /* Primary text - Body */
-  --color-text-main: #e5e7eb;         /* Alias for primary */
-  --color-text-muted: #9ca3af;        /* Secondary text - Descriptions */
-  --color-text-subtle: #6b7280;       /* Tertiary text - Captions, labels */
-  --color-text-disabled: #4b5563;     /* Disabled state */
+  --color-text-primary: #f0f0f5;      /* Primary text - Body (grey-100) */
+  --color-text-main: #f0f0f5;         /* Alias for primary */
+  --color-text-muted: #8b8dac;        /* Secondary text - Descriptions (grey-400) */
+  --color-text-subtle: #696d91;       /* Tertiary text - Captions, labels (grey-500) */
+  --color-text-disabled: #545778;     /* Disabled state (grey-600) */
   
   /* Typography Scale (Modern, generous sizing) */
   --font-display: 'Raleway', system-ui, -apple-system, sans-serif;
@@ -101,10 +101,6 @@
 
 body {
   background: var(--color-surface-900);
-  background-image:
-    radial-gradient(circle at 20% 50%, rgba(147, 112, 255, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(147, 112, 255, 0.02) 0%, transparent 50%);
-  background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
@@ -234,7 +230,6 @@ body {
 .wiki-content {
   color: var(--color-text-main);
   line-height: 1.7;
-  max-width: 75ch;
 }
 
 .wiki-content h1 {
@@ -579,14 +574,13 @@ textarea:focus-visible {
 
 /* Modern Button System - Friendly, welcoming */
 .btn {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   font-size: var(--font-size-sm);
   font-weight: 600;
-  border-radius: var(--radius-lg);
+  border-radius: 4px;
   transition: all var(--transition-base);
   cursor: pointer;
   border: none;
@@ -597,33 +591,18 @@ textarea:focus-visible {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-active) 100%);
+  background: var(--color-primary);
   color: white;
-  box-shadow: 0 4px 20px var(--color-primary-glow), 0 0 40px rgba(147, 112, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--color-primary-hover) 0%, var(--color-primary) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px var(--color-primary-glow), 0 0 60px rgba(147, 112, 255, 0.25);
-}
-
-.btn-primary:hover::before {
-  opacity: 1;
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
 }
 
 .btn-primary:active {
-  transform: translateY(-1px);
+  transform: translateY(0);
 }
 
 .btn-secondary {
