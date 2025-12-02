@@ -22,28 +22,43 @@
   --color-border: #33374a;
   --color-border-subtle: #33374a;
   
-  /* Primary Accent - Mastodon Official Indigo */
-  --color-primary: #8886ff;           /* Primary actions, links (indigo-400) */
-  --color-primary-hover: #a5abfd;     /* Hover state (indigo-300) */
-  --color-primary-active: #6147e6;    /* Active/pressed state (indigo-600) */
-  --color-primary-subtle: rgba(136, 134, 255, 0.1);  /* Subtle backgrounds */
-  --color-primary-border: rgba(136, 134, 255, 0.18);  /* Hairline borders */
+  /* Primary Accent - Mastodon Official Purple */
+  --color-primary: #6364ff;           /* Primary actions, links (Mastodon official) */
+  --color-primary-hover: #858afa;     /* Hover state (Mastodon light purple) */
+  --color-primary-active: #563acc;    /* Active/pressed state (Mastodon dark purple) */
+  --color-primary-subtle: rgba(99, 100, 255, 0.1);  /* Subtle backgrounds */
+  --color-primary-border: rgba(99, 100, 255, 0.18);  /* Hairline borders */
+  --color-primary-glow: rgba(99, 100, 255, 0.25);  /* Glow/bloom effects */
 
-  /* Accent Colors - Mastodon Official */
-  --color-accent-error: #ff637e;      /* Error/Red (red-500) */
-  --color-accent-warning: #ffb900;    /* Warning/Yellow (yellow-400) */
-  --color-accent-success: #05df72;    /* Success/Green (green-400) */
-  
-  /* Legacy accent aliases */
-  --color-accent: #7c7dff;
-  --color-highlight: #7c7dff;
-  
-  /* Secondary/Success palette (for CTAs, success states) */
-  --color-secondary: #8b5cf6;
-  --color-secondary-hover: #a78bfa;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
+  /* Secondary Goldenrod Palette - Warm Accents */
+  --color-secondary: #ffc954;              /* Badges, highlights, warm CTAs */
+  --color-secondary-hover: #ffd77a;        /* Hover state (lighter) */
+  --color-secondary-active: #f0b636;       /* Active state (darker) */
+  --color-secondary-subtle: rgba(255, 201, 84, 0.1);  /* 10% opacity backgrounds */
+  --color-secondary-border: rgba(255, 201, 84, 0.2);  /* Border highlights */
+  --color-secondary-glow: rgba(255, 201, 84, 0.25);   /* Warm glow effect */
+  --color-secondary-dark: #d89e2f;         /* Dark mode text on secondary */
+
+  /* Semantic Colors - Mastodon Official with subtle variants */
+  --color-success: #05df72;             /* Success/Green (Mastodon official) */
+  --color-success-subtle: rgba(5, 223, 114, 0.1);
+
+  --color-warning: #ffb900;             /* Warning/Yellow (Mastodon official) */
+  --color-warning-subtle: rgba(255, 185, 0, 0.1);
+
+  --color-error: #ff637e;               /* Error/Red (Mastodon official) */
+  --color-error-subtle: rgba(255, 99, 126, 0.1);
+
+  --color-info: #858afa;                /* Info/Light purple (Mastodon) */
+  --color-info-subtle: rgba(133, 138, 250, 0.1);
+
+  /* Legacy aliases (backward compatibility) */
+  --color-accent: #6364ff;
+  --color-highlight: #6364ff;
+  --color-accent-error: #ff637e;
+  --color-accent-warning: #ffb900;
+  --color-accent-success: #05df72;
+  --color-danger: #ff637e;
   
   /* Text Hierarchy - Mastodon Official */
   --color-text-white: #ffffff;        /* Pure white - Headings only */
@@ -88,10 +103,17 @@
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Bloom/Glow effects (Subtle spotlight) */
-  --glow-primary: radial-gradient(circle at top left, var(--color-primary-glow) 0%, transparent 50%);
-  --glow-hover: radial-gradient(circle at center, var(--color-primary-glow) 0%, transparent 70%);
+
+  /* Layout - Consistent Max Widths */
+  --max-width-content: 1280px;      /* Main content container (same as Mastodon) */
+  --max-width-reading: 720px;       /* Reading column for wiki pages */
+  --max-width-hero: 1280px;         /* Hero section (matches content) */
+
+  /* Gradient System */
+  --gradient-primary: linear-gradient(135deg, #6364ff 0%, #858afa 100%);
+  --gradient-warm: linear-gradient(135deg, #ffc954 0%, #ff8c42 100%);
+  --gradient-sunset: linear-gradient(135deg, #6364ff 0%, #ffc954 100%);
+
 }
 
 /* Base Styles */
@@ -108,6 +130,42 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Layout Utilities - Consistent Container Widths */
+.container-content {
+  width: 100%;
+  max-width: var(--max-width-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.container-reading {
+  width: 100%;
+  max-width: var(--max-width-reading);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Typography Utilities */
+.font-display { font-family: var(--font-display) !important; }
+.font-sans { font-family: var(--font-sans) !important; }
+.font-mono { font-family: var(--font-mono) !important; }
 
 /* Tailwind Custom Utilities - Design System Integration */
 .bg-surface-950 { background-color: var(--color-surface-950) !important; }
@@ -136,6 +194,30 @@ body {
 .border-surface-700 { border-color: var(--color-surface-700) !important; }
 .border-primary { border-color: var(--color-primary) !important; }
 .border-primary\/50 { border-color: var(--color-primary-border) !important; }
+
+/* Secondary Color Utilities */
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.bg-secondary-subtle { background-color: var(--color-secondary-subtle) !important; }
+.text-secondary { color: var(--color-secondary) !important; }
+.text-secondary-dark { color: var(--color-secondary-dark) !important; }
+.border-secondary { border-color: var(--color-secondary) !important; }
+.border-secondary-border { border-color: var(--color-secondary-border) !important; }
+
+/* Semantic Color Utilities */
+.bg-info-subtle { background-color: var(--color-info-subtle) !important; }
+.bg-warning-subtle { background-color: var(--color-warning-subtle) !important; }
+.bg-error-subtle { background-color: var(--color-error-subtle) !important; }
+.bg-success-subtle { background-color: var(--color-success-subtle) !important; }
+
+.text-info { color: var(--color-info) !important; }
+.text-warning { color: var(--color-warning) !important; }
+.text-error { color: var(--color-error) !important; }
+.text-success { color: var(--color-success) !important; }
+
+.border-info { border-color: var(--color-info) !important; }
+.border-warning { border-color: var(--color-warning) !important; }
+.border-error { border-color: var(--color-error) !important; }
+.border-success { border-color: var(--color-success) !important; }
 
 /* Enhanced Selection - Electric Violet Pulse */
 ::selection {
@@ -180,39 +262,18 @@ body {
   transform: translateY(-1px);
 }
 
-/* Interactive Card with Subtle Glow */
+/* Interactive Card - Mastodon Style (No Glow) */
 .card-interactive {
   background: var(--color-surface-800);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-base);
   padding: 1.5rem;
   transition: all var(--transition-base);
-  position: relative;
-  overflow: hidden;
   border: 1px solid var(--color-surface-700);
-}
-
-.card-interactive::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--glow-primary);
-  opacity: 0;
-  transition: opacity var(--transition-base);
-  pointer-events: none;
-}
-
-.card-interactive:hover::before {
-  opacity: 1;
 }
 
 .card-interactive:hover {
   background: var(--color-surface-750);
-  transform: translateY(-2px);
   border-color: var(--color-primary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 30px var(--color-primary-glow);
 }
 
 /* Minimal Border Utility (Use sparingly - only for inputs) */
@@ -224,6 +285,65 @@ body {
 .focus-ring {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* Background Pattern Utilities */
+.pattern-dots {
+  background-image: radial-gradient(circle, rgba(99, 100, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  position: relative;
+}
+
+.pattern-lines {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(99, 100, 255, 0.03) 20px,
+    rgba(99, 100, 255, 0.03) 21px
+  );
+}
+
+.pattern-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.pattern-glow-mesh {
+  background-image:
+    radial-gradient(at 27% 37%, rgba(99, 100, 255, 0.12) 0px, transparent 50%),
+    radial-gradient(at 97% 21%, rgba(255, 201, 84, 0.08) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, rgba(133, 138, 250, 0.08) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, rgba(99, 100, 255, 0.07) 0px, transparent 50%);
+}
+
+.pattern-circuit {
+  background-image:
+    linear-gradient(rgba(99, 100, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 100, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  position: relative;
+}
+
+.pattern-circuit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 25% 25%, rgba(99, 100, 255, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Reduce motion support - disable patterns for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .pattern-dots,
+  .pattern-lines,
+  .pattern-noise,
+  .pattern-glow-mesh,
+  .pattern-circuit {
+    background-image: none !important;
+  }
+  .pattern-circuit::after {
+    display: none;
+  }
 }
 
 /* Wiki Content Styles */
@@ -561,6 +681,14 @@ body {
   animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
 /* Focus Styles - Enhanced Electric Violet */
 a:focus-visible,
 button:focus-visible,
@@ -572,52 +700,46 @@ textarea:focus-visible {
   box-shadow: 0 0 0 4px var(--color-primary-glow);
 }
 
-/* Modern Button System - Friendly, welcoming */
+/* Modern Button System - Mastodon Style */
 .btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   font-size: var(--font-size-sm);
   font-weight: 600;
-  border-radius: 4px;
-  transition: all var(--transition-base);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-base), border-color var(--transition-base);
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   text-decoration: none;
-  position: relative;
-  overflow: hidden;
   font-family: var(--font-sans);
 }
 
 .btn-primary {
   background: var(--color-primary);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary:hover {
   background: var(--color-primary-hover);
-  transform: translateY(-1px);
-}
-
-.btn-primary:active {
-  transform: translateY(0);
 }
 
 .btn-secondary {
-  background: var(--color-surface-800);
-  color: var(--color-text-white);
+  background: var(--color-secondary);
+  color: var(--color-secondary-dark);
+  border-color: var(--color-secondary-border);
 }
 
 .btn-secondary:hover {
-  background: var(--color-surface-750);
-  transform: translateY(-1px);
+  background: var(--color-secondary-hover);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--color-text-muted);
+  border-color: var(--color-surface-700);
 }
 
 .btn-ghost:hover {
@@ -626,19 +748,61 @@ textarea:focus-visible {
 }
 
 .btn-icon {
-  padding: 0.625rem;
-  width: 2.75rem;
-  height: 2.75rem;
+  padding: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .btn-sm {
-  padding: 0.5rem 1rem;
+  padding: 0.375rem 0.75rem;
   font-size: var(--font-size-xs);
 }
 
 .btn-lg {
-  padding: 0.875rem 1.75rem;
+  padding: 0.625rem 1.25rem;
   font-size: var(--font-size-base);
+}
+
+/* Badge System - Mastodon Style */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: background var(--transition-base), border-color var(--transition-base);
+  text-decoration: none;
+}
+
+.badge-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.badge-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.badge-secondary {
+  background: var(--color-secondary);
+  color: var(--color-secondary-dark);
+}
+
+.badge-secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.badge-outline-secondary {
+  background: var(--color-secondary-subtle);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary-border);
+}
+
+.badge-outline-secondary:hover {
+  background: var(--color-secondary);
+  color: var(--color-secondary-dark);
 }
 
 /* Utility Classes - Removed gradient and glass effects for Mastodon aesthetic */

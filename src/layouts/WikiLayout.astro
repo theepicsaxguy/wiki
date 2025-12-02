@@ -80,14 +80,13 @@ if (currentSlug) {
           <!-- Header - Kept visible with blur -->
           <div class="sticky top-0 z-10 bg-surface-900/95 backdrop-blur-lg border-b border-surface-700/50 px-5 py-5">
             <div class="flex items-center justify-between mb-4">
-              <h2 class="text-lg font-bold text-white" style="font-family: var(--font-display);">
+              <h2 class="text-lg font-bold text-white font-display">
                 Navigation
               </h2>
               <button
                 id="mobile-sidebar-close"
                 class="w-10 h-10 flex items-center justify-center rounded hover:bg-surface-800 transition-colors text-text-muted hover:text-white"
                 aria-label="Close menu"
-                style="border-radius: 4px;"
               >
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
@@ -101,7 +100,6 @@ if (currentSlug) {
                 type="text"
                 placeholder="Search wiki..."
                 class="w-full px-4 py-3 pl-11 bg-surface-800 border border-surface-700 text-sm text-white placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
-                style="border-radius: 4px;"
                 aria-label="Quick search"
               />
               <svg
@@ -124,25 +122,26 @@ if (currentSlug) {
               <nav aria-label="Main navigation">
                 <ul class="space-y-2">
                   <li>
-                    <a href="/" class="block px-4 py-3.5 text-sm font-semibold bg-primary text-white hover:bg-primary-hover transition-all" style="border-radius: 4px;">
-                      🏠 Wiki Home
+                    <a href="/" class="block px-4 py-3.5 text-sm font-semibold bg-primary text-white hover:bg-primary-hover transition-all rounded-lg flex items-center gap-2">
+                      <Icon name="home" size={16} />
+                      Wiki Home
                     </a>
                   </li>
                   <li>
-                    <a href="/docs/user/getting-started" class="block px-4 py-3 text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-all flex items-center gap-2 group" style="border-radius: 4px;">
-                      <span class="text-primary group-hover:scale-110 transition-transform">→</span>
+                    <a href="/docs/user/getting-started" class="block px-4 py-3 text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-all rounded-lg flex items-center gap-2 group">
+                      <Icon name="arrow-right" size={16} class="text-primary group-hover:scale-110 transition-transform" />
                       Getting Started
                     </a>
                   </li>
                   <li>
-                    <a href="/docs/policies/rules" class="block px-4 py-3 text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-all flex items-center gap-2 group" style="border-radius: 4px;">
-                      <span class="text-primary group-hover:scale-110 transition-transform">→</span>
+                    <a href="/docs/policies/rules" class="block px-4 py-3 text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-all rounded-lg flex items-center gap-2 group">
+                      <Icon name="arrow-right" size={16} class="text-primary group-hover:scale-110 transition-transform" />
                       Community Rules
                     </a>
                   </li>
                   <li>
-                    <a href="/docs/legal/privacy" class="block px-4 py-3 text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-all flex items-center gap-2 group" style="border-radius: 4px;">
-                      <span class="text-primary group-hover:scale-110 transition-transform">→</span>
+                    <a href="/docs/legal/privacy" class="block px-4 py-3 text-sm font-medium text-text-muted hover:text-white hover:bg-surface-800 transition-all rounded-lg flex items-center gap-2 group">
+                      <Icon name="arrow-right" size={16} class="text-primary group-hover:scale-110 transition-transform" />
                       Privacy Policy
                     </a>
                   </li>
@@ -169,7 +168,7 @@ if (currentSlug) {
       ]}>
         <!-- Docs Sidebar (Desktop Only) - Fixed width, sticky -->
         {isDocsPage && (
-          <aside class="hidden lg:block w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-surface-700 py-8 pr-6 pl-6">
+          <aside class="hidden lg:block w-64 shrink-0 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-surface-700 py-8 pr-6 pl-6 pattern-noise">
             <Sidebar />
           </aside>
         )}
@@ -315,8 +314,8 @@ if (currentSlug) {
     </div>
 
     <!-- Footer -->
-    <footer class="bg-surface-900 border-t border-surface-700/50 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer class="bg-surface-900 border-t border-surface-700/50 mt-auto pattern-lines">
+      <div class="container-content py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div class="md:col-span-2">
             <div class="flex items-center gap-3 mb-4">
@@ -326,7 +325,7 @@ if (currentSlug) {
                 </svg>
               </div>
               <div>
-                <h3 class="text-white font-bold" style="font-family: var(--font-display);">goingdark.social</h3>
+                <h3 class="text-white font-bold font-display">goingdark.social</h3>
                 <p class="text-xs text-text-muted font-medium">Privacy-focused Mastodon</p>
               </div>
             </div>
@@ -336,29 +335,29 @@ if (currentSlug) {
           </div>
 
           <div>
-            <h3 class="text-white font-bold mb-4 text-sm" style="font-family: var(--font-display);">Resources</h3>
+            <h3 class="text-white font-bold mb-4 text-sm font-display">Resources</h3>
             <ul class="space-y-3">
               <li><a href="/" class="text-text-muted hover:text-primary transition-colors text-sm flex items-center gap-2 group">
-                <span class="text-primary group-hover:translate-x-1 transition-transform">→</span>
+                <Icon name="arrow-right" size={14} class="text-primary group-hover:translate-x-1 transition-transform" />
                 Home
               </a></li>
               <li><a href="/docs/policies/rules" class="text-text-muted hover:text-primary transition-colors text-sm flex items-center gap-2 group">
-                <span class="text-primary group-hover:translate-x-1 transition-transform">→</span>
+                <Icon name="arrow-right" size={14} class="text-primary group-hover:translate-x-1 transition-transform" />
                 Server Rules
               </a></li>
               <li><a href="/docs/legal/privacy" class="text-text-muted hover:text-primary transition-colors text-sm flex items-center gap-2 group">
-                <span class="text-primary group-hover:translate-x-1 transition-transform">→</span>
+                <Icon name="arrow-right" size={14} class="text-primary group-hover:translate-x-1 transition-transform" />
                 Privacy Policy
               </a></li>
               <li><a href="https://joinmastodon.org/" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-primary transition-colors text-sm flex items-center gap-2 group">
-                <span class="text-primary group-hover:translate-x-1 transition-transform">→</span>
+                <Icon name="arrow-right" size={14} class="text-primary group-hover:translate-x-1 transition-transform" />
                 About Mastodon
               </a></li>
             </ul>
           </div>
 
           <div>
-            <h3 class="text-white font-bold mb-4 text-sm" style="font-family: var(--font-display);">Get in Touch</h3>
+            <h3 class="text-white font-bold mb-4 text-sm font-display">Get in Touch</h3>
             <ul class="space-y-3 text-sm">
               <li class="flex items-center gap-2 text-text-muted">
                 <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -373,7 +372,7 @@ if (currentSlug) {
                 @admin@goingdark.social
               </li>
               <li class="mt-4">
-                <a href="https://goingdark.social" target="_blank" rel="noopener noreferrer" class="btn btn-primary w-full group/btn">
+                <a href="https://goingdark.social" target="_blank" rel="noopener noreferrer" class="btn btn-secondary w-full group/btn">
                   <span>Join Now</span>
                   <svg class="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />

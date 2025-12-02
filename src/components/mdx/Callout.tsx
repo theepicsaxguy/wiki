@@ -30,34 +30,34 @@ const CalloutIcon = ({ type, className }: { type: CalloutType; className?: strin
 
 const styles = {
   info: {
-    container: 'bg-blue-500/5 border-blue-500/30',
-    title: 'text-blue-300',
-    text: 'text-blue-100/90',
-    icon: 'text-blue-400'
+    container: 'bg-info-subtle border-info/30',
+    title: 'text-info',
+    text: 'text-text-primary',
+    icon: 'text-info'
   },
   warning: {
-    container: 'bg-yellow-500/5 border-yellow-500/30',
-    title: 'text-yellow-300',
-    text: 'text-yellow-100/90',
-    icon: 'text-yellow-400'
+    container: 'bg-warning-subtle border-warning/30',
+    title: 'text-warning',
+    text: 'text-text-primary',
+    icon: 'text-warning'
   },
   error: {
-    container: 'bg-red-500/5 border-red-500/30',
-    title: 'text-red-300',
-    text: 'text-red-100/90',
-    icon: 'text-red-400'
+    container: 'bg-error-subtle border-error/30',
+    title: 'text-error',
+    text: 'text-text-primary',
+    icon: 'text-error'
   },
   success: {
-    container: 'bg-green-500/5 border-green-500/30',
-    title: 'text-green-300',
-    text: 'text-green-100/90',
-    icon: 'text-green-400'
+    container: 'bg-success-subtle border-success/30',
+    title: 'text-success',
+    text: 'text-text-primary',
+    icon: 'text-success'
   },
   tip: {
-    container: 'bg-purple-500/5 border-purple-500/30',
-    title: 'text-purple-300',
-    text: 'text-purple-100/90',
-    icon: 'text-purple-400'
+    container: 'bg-secondary-subtle border-secondary/30',
+    title: 'text-secondary',
+    text: 'text-text-primary',
+    icon: 'text-secondary'
   }
 };
 
